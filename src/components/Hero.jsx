@@ -1,61 +1,26 @@
-import { useState, useEffect } from 'react';
 import { ArrowRight, Shield, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/hero-section.png';
 
 export function Hero() {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   return (
     <>
-      <section 
-        id="hero" 
-        className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20 bg-black"
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+      <section id="hero" className="relative min-h-screen flex items-center pt-20 bg-black">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className="w-full h-full object-cover"
-            style={{ 
-              opacity: 1,
-              minHeight: '100%',
-              minWidth: '100%',
-              width: '100%',
-              height: '100%',
-              display: 'block',
-              objectFit: 'cover',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: 1
-            }}
+            className="w-full h-full object-cover opacity-30"
             loading="eager"
-            onError={(e) => {
-              console.error('Hero image failed to load:', heroImage);
-              console.error('Image path:', heroImage);
-              console.error('Image type:', typeof heroImage);
-            }}
-            onLoad={() => {
-              console.log('Hero image loaded successfully:', heroImage);
-              console.log('Image URL:', heroImage);
-            }}
           />
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* Scroll Indicator - Sadece desktop'ta göster */}
-        <div className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
           <div className="animate-bounce">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
               <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
@@ -65,7 +30,7 @@ export function Hero() {
       </section>
 
       {/* Hero Content Section */}
-      <section className="bg-black py-8 md:py-16 lg:py-24">
+      <section className="bg-black py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
