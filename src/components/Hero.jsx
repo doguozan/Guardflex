@@ -26,15 +26,28 @@ export function Hero() {
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
             className={`w-full h-full ${isMobile ? 'object-contain' : 'object-cover'}`}
             style={{ 
-              opacity: isMobile ? 0.7 : 0.3,
+              opacity: isMobile ? 1 : 0.5,
               minHeight: '100%',
               minWidth: '100%',
+              width: '100%',
+              height: '100%',
               display: 'block',
-              objectFit: isMobile ? 'contain' : 'cover'
+              objectFit: isMobile ? 'contain' : 'cover',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: 1
             }}
             loading="eager"
+            onError={(e) => {
+              console.error('Hero image failed to load:', heroImage);
+              e.target.style.display = 'none';
+            }}
+            onLoad={() => {
+              console.log('Hero image loaded successfully');
+            }}
           />
-          <div className={`absolute inset-0 ${isMobile ? 'bg-black/20' : 'bg-black/60'}`}></div>
+          <div className={`absolute inset-0 z-[2] ${isMobile ? 'bg-black/5' : 'bg-black/40'}`}></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
