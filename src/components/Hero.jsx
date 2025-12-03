@@ -13,10 +13,11 @@ export function Hero() {
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className="w-full h-full object-contain opacity-30 md:object-cover"
+            className="w-full h-full object-contain opacity-40 md:object-cover md:opacity-30"
             loading="eager"
+            style={{ minHeight: '100%', objectFit: 'contain' }}
           />
-          <div className="absolute inset-0 bg-black/50 md:bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/40 md:bg-black/60"></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}

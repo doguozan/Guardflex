@@ -187,8 +187,18 @@ export function Header() {
                     {productCategories.filter(cat => cat !== 'Alle').map((category) => (
                       <button
                         key={category}
-                        onClick={() => handleCategoryClick(category)}
-                        className="block w-full text-left text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCategoryClick(category);
+                        }}
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCategoryClick(category);
+                        }}
+                        className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                        type="button"
                       >
                         {category}
                       </button>
