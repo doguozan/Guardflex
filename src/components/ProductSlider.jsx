@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { products } from '../data/products';
@@ -8,6 +8,9 @@ export function ProductSlider() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const sliderRef = useRef(null);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
   
   // İlk 6 ürünü göster
   const featuredProducts = products.slice(0, 6);
@@ -38,8 +41,10 @@ export function ProductSlider() {
   const maxIndex = Math.max(0, featuredProducts.length - visibleCount);
 
   const goToPrevious = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
@@ -47,8 +52,10 @@ export function ProductSlider() {
   };
 
   const goToNext = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
@@ -57,6 +64,36 @@ export function ProductSlider() {
 
   const handleProductClick = (productId) => {
     navigate('/products', { state: { productId } });
+  };
+
+  // Touch event handlers for swipe
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Minimum swipe distance in pixels
+
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0) {
+        // Swipe left - go to next
+        goToNext();
+      } else {
+        // Swipe right - go to previous
+        goToPrevious();
+      }
+    }
+
+    // Reset touch positions
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   return (
@@ -111,12 +148,17 @@ export function ProductSlider() {
           {/* Products Slider - Daha kompakt gap ve smooth animasyon */}
           <div className="overflow-hidden rounded-xl">
             <div
-              className="flex transition-transform gap-3 sm:gap-4"
+              ref={sliderRef}
+              className="flex transition-transform gap-3 sm:gap-4 touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               style={{
                 transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
                 willChange: 'transform',
                 transitionDuration: '400ms',
                 transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                touchAction: 'pan-y pinch-zoom',
               }}
             >
               {featuredProducts.map((product, index) => (

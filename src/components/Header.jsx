@@ -46,6 +46,7 @@ export function Header() {
   const handleCategoryClick = (category) => {
     navigate('/products', { state: { category } });
     setIsProductsSubmenuOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -176,7 +177,10 @@ export function Header() {
                     <Link
                       to="/products"
                       className="block text-gray-400 hover:text-emerald-400 transition-colors text-sm"
-                      onClick={() => setIsProductsSubmenuOpen(false)}
+                      onClick={() => {
+                        setIsProductsSubmenuOpen(false);
+                        setIsMobileMenuOpen(false);
+                      }}
                     >
                       Alle Produkte
                     </Link>
