@@ -7,16 +7,16 @@ export function Hero() {
 
   return (
     <>
-      <section id="hero" className="relative min-h-screen flex items-center pt-20 bg-black">
+      <section id="hero" className="relative min-h-[60vh] md:min-h-screen flex items-center pt-20 bg-black">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className="w-full h-full object-cover opacity-30 md:object-cover"
+            className="w-full h-full object-contain opacity-30 md:object-cover"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/50 md:bg-black/60"></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
@@ -30,7 +30,7 @@ export function Hero() {
       </section>
 
       {/* Hero Content Section */}
-      <section className="bg-black py-16 lg:py-24">
+      <section className="bg-black py-8 md:py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
