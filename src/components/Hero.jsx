@@ -20,21 +20,14 @@ export function Hero() {
     <>
       <section 
         id="hero" 
-        className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-          backgroundSize: isMobile ? 'contain' : 'cover',
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed'
-        }}
+        className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20 bg-black"
       >
-        {/* Background Image - Double layer for reliability */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className={`w-full h-full ${isMobile ? 'object-contain' : 'object-cover'}`}
+            className="w-full h-full object-cover"
             style={{ 
               opacity: 1,
               minHeight: '100%',
@@ -42,24 +35,21 @@ export function Hero() {
               width: '100%',
               height: '100%',
               display: 'block',
-              objectFit: isMobile ? 'contain' : 'cover',
+              objectFit: 'cover',
               position: 'absolute',
               top: 0,
               left: 0,
-              zIndex: 1,
-              visibility: 'visible'
+              zIndex: 1
             }}
             loading="eager"
             onError={(e) => {
               console.error('Hero image failed to load:', heroImage);
               console.error('Image path:', heroImage);
               console.error('Image type:', typeof heroImage);
-              e.target.style.display = 'none';
             }}
             onLoad={() => {
               console.log('Hero image loaded successfully:', heroImage);
               console.log('Image URL:', heroImage);
-              console.log('Image visible:', true);
             }}
           />
         </div>
