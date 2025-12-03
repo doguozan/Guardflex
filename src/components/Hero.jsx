@@ -21,22 +21,15 @@ export function Hero() {
       <section 
         id="hero" 
         className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20 bg-black"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-          backgroundSize: isMobile ? 'contain' : 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: '#000000'
-        }}
       >
         {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
             className={`w-full h-full ${isMobile ? 'object-contain' : 'object-cover'}`}
             style={{ 
-              opacity: isMobile ? 1 : 0.8,
+              opacity: isMobile ? 1 : 0.9,
               minHeight: '100%',
               minWidth: '100%',
               width: '100%',
@@ -46,23 +39,20 @@ export function Hero() {
               position: 'absolute',
               top: 0,
               left: 0,
-              zIndex: 1,
-              backgroundColor: '#000000'
+              zIndex: 1
             }}
             loading="eager"
             onError={(e) => {
               console.error('Hero image failed to load:', heroImage);
               console.error('Image path:', heroImage);
               console.error('Image type:', typeof heroImage);
-              // Görsel yüklenemezse gizleme, fallback göster
-              e.target.style.opacity = '0';
             }}
             onLoad={() => {
               console.log('Hero image loaded successfully:', heroImage);
               console.log('Image URL:', heroImage);
             }}
           />
-          <div className={`absolute inset-0 z-[2] ${isMobile ? 'bg-black/5' : 'bg-black/20'}`}></div>
+          <div className={`absolute inset-0 z-[2] ${isMobile ? 'bg-black/10' : 'bg-black/15'}`}></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
