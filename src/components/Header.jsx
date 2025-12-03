@@ -163,8 +163,18 @@ export function Header() {
               {/* Mobile Produkte Dropdown */}
               <div>
                 <button
-                  onClick={() => setIsProductsSubmenuOpen(!isProductsSubmenuOpen)}
-                  className="flex items-center justify-between w-full text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsProductsSubmenuOpen(!isProductsSubmenuOpen);
+                  }}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsProductsSubmenuOpen(!isProductsSubmenuOpen);
+                  }}
+                  className="flex items-center justify-between w-full text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
+                  type="button"
                 >
                   Produkte
                   <ChevronDown 
@@ -176,8 +186,14 @@ export function Header() {
                   <div className="mt-2 ml-4 space-y-2">
                     <Link
                       to="/products"
-                      className="block text-gray-400 hover:text-emerald-400 transition-colors text-sm"
-                      onClick={() => {
+                      className="block text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsProductsSubmenuOpen(false);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      onTouchEnd={(e) => {
+                        e.stopPropagation();
                         setIsProductsSubmenuOpen(false);
                         setIsMobileMenuOpen(false);
                       }}
@@ -208,32 +224,41 @@ export function Header() {
               </div>
               <Link
                 to="/services"
-                className="text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                onTouchEnd={() => setIsMobileMenuOpen(false)}
               >
                 Dienstleistungen
               </Link>
               <Link
                 to="/benefits"
-                className="text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                onTouchEnd={() => setIsMobileMenuOpen(false)}
               >
                 Vorteile
               </Link>
               <Link
                 to="/gallery"
-                className="text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                onTouchEnd={() => setIsMobileMenuOpen(false)}
               >
                 Galerie
               </Link>
               <Link
                 to="/history"
-                className="text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                onTouchEnd={() => setIsMobileMenuOpen(false)}
               >
                 Geschichte
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-300 hover:text-emerald-500 transition-colors text-left"
+                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
+                onTouchEnd={() => setIsMobileMenuOpen(false)}
               >
                 Kontakt
               </Link>
