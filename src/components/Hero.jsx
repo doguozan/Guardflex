@@ -13,14 +13,14 @@ export function Hero() {
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className="w-full h-full object-contain md:object-cover opacity-30"
+            className="w-full h-full object-cover opacity-30 md:object-cover"
             loading="eager"
           />
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+        {/* Scroll Indicator - Sadece desktop'ta göster */}
+        <div className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
           <div className="animate-bounce">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
               <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
