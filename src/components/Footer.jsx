@@ -1,6 +1,6 @@
 import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logo from 'figma:asset/06e4e24f87a742479886d893331277b8ab950bb5.png';
+import logo from '../assets/06e4e24f87a742479886d893331277b8ab950bb5.png';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

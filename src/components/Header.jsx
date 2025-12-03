@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
 import { productCategories } from '../data/products';
-import logo from 'figma:asset/06e4e24f87a742479886d893331277b8ab950bb5.png';
+import logo from '../assets/06e4e24f87a742479886d893331277b8ab950bb5.png';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);

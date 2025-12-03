@@ -7,21 +7,53 @@ const productImageModules = import.meta.glob('/src/assets/GuardFlex-urunler/**/*
   import: 'default'
 });
 
-// Path mapping oluştur
+// Path mapping oluştur - daha esnek eşleştirme için
 const imagePathMap = {};
+const imageFileNameMap = {};
+
 for (const [path, module] of Object.entries(productImageModules)) {
-  // Path'i normalize et ve mapping'e ekle
+  // Path'i normalize et
   const normalizedPath = path
     .replace(/\\/g, '/')
     .replace('/src/assets/GuardFlex-urunler/', '/GuardFlex-urunler/');
+  
+  // Tam path mapping
   imagePathMap[normalizedPath] = module;
   
-  // Dosya adına göre de mapping ekle (fallback için)
+  // Dosya adına göre mapping (fallback için)
   const fileName = path.split('/').pop();
   if (fileName) {
-    imagePathMap[fileName] = module;
+    imageFileNameMap[fileName] = module;
+  }
+  
+  // Path'in son kısmını da ekle (klasör + dosya adı)
+  const pathParts = normalizedPath.split('/');
+  if (pathParts.length >= 2) {
+    const lastTwoParts = pathParts.slice(-2).join('/');
+    imagePathMap[lastTwoParts] = module;
   }
 }
+
+/**
+ * Path'i normalize et ve eşleştir
+ */
+const normalizePath = (path) => {
+  return path
+    .replace(/\\/g, '/')
+    .replace(/\/+/g, '/') // Çoklu slash'leri tek slash'a çevir
+    .trim();
+};
+
+/**
+ * Path'i dosya adına göre bul
+ */
+const findImageByFileName = (imagePath) => {
+  const fileName = imagePath.split('/').pop();
+  if (fileName && imageFileNameMap[fileName]) {
+    return imageFileNameMap[fileName];
+  }
+  return null;
+};
 
 /**
  * Ürün resmini getiren fonksiyon
@@ -40,61 +72,82 @@ export const getProductImage = (imageAsset) => {
     return imageAsset;
   }
 
+  // Path'i normalize et
+  const normalizedAsset = normalizePath(imageAsset);
+
   // /GuardFlex-urunler/ ile başlıyorsa
-  if (imageAsset.startsWith('/GuardFlex-urunler/')) {
-    // Önce mapping'de ara
-    if (imagePathMap[imageAsset]) {
-      return imagePathMap[imageAsset];
+  if (normalizedAsset.startsWith('/GuardFlex-urunler/')) {
+    // Önce tam path ile ara
+    if (imagePathMap[normalizedAsset]) {
+      return imagePathMap[normalizedAsset];
     }
     
-    // Mapping'de yoksa, Vite'ın asset handling'i için src/assets path'ine dönüştür
-    const assetPath = imageAsset.replace('/GuardFlex-urunler/', '/src/assets/GuardFlex-urunler/');
+    // Path'in son kısmıyla ara (klasör + dosya)
+    const pathParts = normalizedAsset.split('/');
+    if (pathParts.length >= 2) {
+      const lastTwoParts = pathParts.slice(-2).join('/');
+      if (imagePathMap[lastTwoParts]) {
+        return imagePathMap[lastTwoParts];
+      }
+    }
+    
+    // Dosya adına göre ara
+    const foundByFileName = findImageByFileName(normalizedAsset);
+    if (foundByFileName) {
+      return foundByFileName;
+    }
+    
+    // Hiçbir eşleşme bulunamazsa, Vite'ın dinamik import'unu kullan
+    const assetPath = normalizedAsset.replace('/GuardFlex-urunler/', '/src/assets/GuardFlex-urunler/');
     
     try {
-      // Vite'ın import.meta.url ile asset'i yükle
-      // Production build'de Vite bu path'i otomatik olarak çözümler ve hash'ler
-      const url = new URL(assetPath, import.meta.url);
-      return url.href;
-    } catch (e) {
-      // Fallback: direkt path (development'ta çalışabilir)
+      // Development'ta direkt path kullan
       if (import.meta.env.DEV) {
         return assetPath;
       }
-      // Production'da base URL ile birleştir
+      
+      // Production'da Vite'ın import.meta.url ile asset'i yükle
+      const url = new URL(assetPath, import.meta.url);
+      return url.href;
+    } catch (e) {
+      // Son fallback: base URL ile birleştir
       const baseUrl = import.meta.env.BASE_URL || '/';
-      return baseUrl + 'assets' + imageAsset;
+      return baseUrl + 'assets' + normalizedAsset;
     }
   }
 
   // figma:asset/ formatı için
-  if (imageAsset.startsWith('figma:asset/')) {
+  if (normalizedAsset.startsWith('figma:asset/')) {
     // GuardFlex-urunler içeriyorsa
-    if (imageAsset.includes('GuardFlex-urunler')) {
-      const cleanPath = imageAsset.replace('figma:asset/', '/GuardFlex-urunler/');
+    if (normalizedAsset.includes('GuardFlex-urunler')) {
+      const cleanPath = normalizedAsset.replace('figma:asset/', '/GuardFlex-urunler/');
       return getProductImage(cleanPath);
     }
     
     // Diğer figma asset'leri için
-    const cleanPath = imageAsset.replace('figma:asset/', '/src/assets/');
+    const cleanPath = normalizedAsset.replace('figma:asset/', '/src/assets/');
     try {
       return new URL(cleanPath, import.meta.url).href;
     } catch (e) {
-      return imageAsset;
+      return normalizedAsset;
     }
   }
 
   // /src/assets/ ile başlıyorsa
-  if (imageAsset.startsWith('/src/assets/')) {
+  if (normalizedAsset.startsWith('/src/assets/')) {
     try {
-      return new URL(imageAsset, import.meta.url).href;
+      if (import.meta.env.DEV) {
+        return normalizedAsset;
+      }
+      return new URL(normalizedAsset, import.meta.url).href;
     } catch (e) {
       // Fallback: base URL ile birleştir
       const baseUrl = import.meta.env.BASE_URL || '/';
-      return baseUrl + imageAsset.replace('/src/', '');
+      return baseUrl + normalizedAsset.replace('/src/', '');
     }
   }
 
   // Fallback: direkt path'i döndür
-  return imageAsset;
+  return normalizedAsset;
 };
 
