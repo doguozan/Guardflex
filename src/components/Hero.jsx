@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Shield, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../assets/57503dff9c38e6b7eeb402e4b94a7a20774c9a01.png';
+import heroImage from '../assets/herosection.png.png';
 
 export function Hero() {
   const navigate = useNavigate();
