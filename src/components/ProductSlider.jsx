@@ -15,6 +15,12 @@ const productImages = {
 
 // Ürün resmini dinamik olarak getiren fonksiyon
 const getProductImage = (imageAsset) => {
+  // Eğer path /src/assets/ ile başlıyorsa, public path'e dönüştür
+  if (imageAsset.startsWith("/src/assets/")) {
+    // Vite public path: /src/assets/GuardFlex-urunler/... -> /GuardFlex-urunler/...
+    return imageAsset.replace("/src/assets/", "/GuardFlex-urunler/");
+  }
+  
   // Eski figma:asset/ formatı için
   if (imageAsset.startsWith("figma:asset/")) {
     const fileName = imageAsset.replace("figma:asset/", "").replace(/\.(png|jpg|jpeg)$/, "");
@@ -26,18 +32,8 @@ const getProductImage = (imageAsset) => {
     
     // GuardFlex-urunler klasöründen resim yükleme
     if (imageAsset.includes("GuardFlex-urunler")) {
-      // Path'i düzelt: figma:asset/GuardFlex-urunler/... -> /src/assets/GuardFlex-urunler/...
-      const assetPath = imageAsset.replace("figma:asset/", "/src/assets/");
-      // Vite için doğru path - import.meta.url ile
-      try {
-        // Development ve production için çalışan yöntem
-        const url = new URL(assetPath, import.meta.url);
-        return url.href;
-      } catch (e) {
-        // Fallback: direkt relative import path
-        // Vite bu path'i otomatik olarak çözümler
-        return assetPath;
-      }
+      // Path'i düzelt: figma:asset/GuardFlex-urunler/... -> /GuardFlex-urunler/...
+      return imageAsset.replace("figma:asset/", "/");
     }
   }
   
