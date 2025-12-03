@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Shield, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../assets/herosection.png.png';
+import heroImage from '../assets/hero-section.png';
 
 export function Hero() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export function Hero() {
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
             className={`w-full h-full ${isMobile ? 'object-contain' : 'object-cover'}`}
             style={{ 
-              opacity: isMobile ? 1 : 0.5,
+              opacity: isMobile ? 1 : 0.7,
               minHeight: '100%',
               minWidth: '100%',
               width: '100%',
@@ -41,13 +41,14 @@ export function Hero() {
             loading="eager"
             onError={(e) => {
               console.error('Hero image failed to load:', heroImage);
+              console.error('Image path:', heroImage);
               e.target.style.display = 'none';
             }}
             onLoad={() => {
-              console.log('Hero image loaded successfully');
+              console.log('Hero image loaded successfully:', heroImage);
             }}
           />
-          <div className={`absolute inset-0 z-[2] ${isMobile ? 'bg-black/5' : 'bg-black/40'}`}></div>
+          <div className={`absolute inset-0 z-[2] ${isMobile ? 'bg-black/10' : 'bg-black/30'}`}></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
