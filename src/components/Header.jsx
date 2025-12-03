@@ -184,22 +184,26 @@ export function Header() {
                 </button>
                 {isProductsSubmenuOpen && (
                   <div className="mt-2 ml-4 space-y-2">
-                    <Link
-                      to="/products"
-                      className="block text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                    <button
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
+                        navigate('/products');
                         setIsProductsSubmenuOpen(false);
                         setIsMobileMenuOpen(false);
                       }}
                       onTouchEnd={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
+                        navigate('/products');
                         setIsProductsSubmenuOpen(false);
                         setIsMobileMenuOpen(false);
                       }}
+                      className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                      type="button"
                     >
                       Alle Produkte
-                    </Link>
+                    </button>
                     {productCategories.filter(cat => cat !== 'Alle').map((category) => (
                       <button
                         key={category}
