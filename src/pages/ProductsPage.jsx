@@ -2,17 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { products, productCategories } from "../data/products";
 import { X, Filter, ChevronDown, ChevronUp } from "lucide-react";
-
-// Ürün resimlerini buraya import edin
-// Örnek: import productImage1 from "../assets/urun-resmi-1.png";
-import product1 from "figma:asset/c79e3af2b9654cf602b0c62be4e695eb0b455139.png";
-import product2 from "figma:asset/70412ccc29e976e61aee3d06f3d68a6556846ecb.png";
-
-// Resim eşleştirme objesi - eski resimler için
-const productImages = {
-  "c79e3af2b9654cf602b0c62be4e695eb0b455139": product1,
-  "70412ccc29e976e61aee3d06f3d68a6556846ecb": product2,
-};
+import { getProductImage } from "../utils/productImages";
 
 export function ProductsPage() {
   const location = useLocation();
@@ -31,38 +21,6 @@ export function ProductsPage() {
   const filteredProducts = selectedCategory === "Alle" 
     ? products 
     : products.filter(product => product.category === selectedCategory);
-
-  // Ürün resmini dinamik olarak getiren fonksiyon
-  const getProductImage = (imageAsset) => {
-    // Eski figma:asset/ formatı için
-    if (imageAsset.startsWith("figma:asset/")) {
-      const fileName = imageAsset.replace("figma:asset/", "").replace(/\.(png|jpg|jpeg)$/, "");
-      
-      // Eğer resim objede varsa onu döndür
-      if (productImages[fileName]) {
-        return productImages[fileName];
-      }
-      
-      // GuardFlex-urunler klasöründen resim yükleme
-      if (imageAsset.includes("GuardFlex-urunler")) {
-        // Path'i düzelt: figma:asset/GuardFlex-urunler/... -> /src/assets/GuardFlex-urunler/...
-        const assetPath = imageAsset.replace("figma:asset/", "/src/assets/");
-        // Vite için doğru path - import.meta.url ile
-        try {
-          // Development ve production için çalışan yöntem
-          const url = new URL(assetPath, import.meta.url);
-          return url.href;
-        } catch (e) {
-          // Fallback: direkt relative import path
-          // Vite bu path'i otomatik olarak çözümler
-          return assetPath;
-        }
-      }
-    }
-    
-    // Fallback: direkt path'i döndür
-    return imageAsset;
-  };
 
   return (
     <div className="pt-20 min-h-screen bg-black">

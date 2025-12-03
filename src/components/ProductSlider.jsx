@@ -2,48 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { products } from '../data/products';
-
-// Ürün resimlerini buraya import edin
-import product1 from "figma:asset/c79e3af2b9654cf602b0c62be4e695eb0b455139.png";
-import product2 from "figma:asset/70412ccc29e976e61aee3d06f3d68a6556846ecb.png";
-
-// Resim eşleştirme objesi - eski resimler için
-const productImages = {
-  "c79e3af2b9654cf602b0c62be4e695eb0b455139": product1,
-  "70412ccc29e976e61aee3d06f3d68a6556846ecb": product2,
-};
-
-// Ürün resmini dinamik olarak getiren fonksiyon
-const getProductImage = (imageAsset) => {
-  // Eğer path /GuardFlex-urunler/ ile başlıyorsa direkt döndür
-  if (imageAsset.startsWith("/GuardFlex-urunler/")) {
-    return imageAsset;
-  }
-  
-  // Eğer path /src/assets/ ile başlıyorsa, public path'e dönüştür
-  if (imageAsset.startsWith("/src/assets/")) {
-    return imageAsset.replace("/src/assets/", "/");
-  }
-  
-  // Eski figma:asset/ formatı için
-  if (imageAsset.startsWith("figma:asset/")) {
-    const fileName = imageAsset.replace("figma:asset/", "").replace(/\.(png|jpg|jpeg)$/, "");
-    
-    // Eğer resim objede varsa onu döndür
-    if (productImages[fileName]) {
-      return productImages[fileName];
-    }
-    
-    // GuardFlex-urunler klasöründen resim yükleme
-    if (imageAsset.includes("GuardFlex-urunler")) {
-      // Path'i düzelt: figma:asset/GuardFlex-urunler/... -> /GuardFlex-urunler/...
-      return imageAsset.replace("figma:asset/", "/");
-    }
-  }
-  
-  // Fallback: direkt path'i döndür
-  return imageAsset;
-};
+import { getProductImage } from '../utils/productImages';
 
 export function ProductSlider() {
   const navigate = useNavigate();

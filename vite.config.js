@@ -54,7 +54,16 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'build',
+    assetsDir: 'assets',
+    // Asset'lerin doğru şekilde kopyalanması için
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]',
+      },
+    },
   },
+  // Public klasörünü assets klasörüne kopyalamak için
+  publicDir: 'public',
   server: {
     port: 3000,
     open: true,
