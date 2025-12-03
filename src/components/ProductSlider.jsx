@@ -15,10 +15,14 @@ const productImages = {
 
 // Ürün resmini dinamik olarak getiren fonksiyon
 const getProductImage = (imageAsset) => {
+  // Eğer path /GuardFlex-urunler/ ile başlıyorsa direkt döndür
+  if (imageAsset.startsWith("/GuardFlex-urunler/")) {
+    return imageAsset;
+  }
+  
   // Eğer path /src/assets/ ile başlıyorsa, public path'e dönüştür
   if (imageAsset.startsWith("/src/assets/")) {
-    // Vite public path: /src/assets/GuardFlex-urunler/... -> /GuardFlex-urunler/...
-    return imageAsset.replace("/src/assets/", "/GuardFlex-urunler/");
+    return imageAsset.replace("/src/assets/", "/");
   }
   
   // Eski figma:asset/ formatı için
