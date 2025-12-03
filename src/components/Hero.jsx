@@ -21,8 +21,15 @@ export function Hero() {
       <section 
         id="hero" 
         className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: isMobile ? 'contain' : 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed'
+        }}
       >
-        {/* Background Image */}
+        {/* Background Image - Double layer for reliability */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             src={heroImage}
@@ -39,21 +46,22 @@ export function Hero() {
               position: 'absolute',
               top: 0,
               left: 0,
-              zIndex: 1
+              zIndex: 1,
+              visibility: 'visible'
             }}
             loading="eager"
             onError={(e) => {
               console.error('Hero image failed to load:', heroImage);
               console.error('Image path:', heroImage);
               console.error('Image type:', typeof heroImage);
+              e.target.style.display = 'none';
             }}
             onLoad={() => {
               console.log('Hero image loaded successfully:', heroImage);
               console.log('Image URL:', heroImage);
+              console.log('Image visible:', true);
             }}
           />
-          {/* Minimal overlay for text readability */}
-          <div className="absolute inset-0 z-[2] bg-black/10"></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
