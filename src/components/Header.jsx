@@ -226,46 +226,96 @@ export function Header() {
                   </div>
                 )}
               </div>
-              <Link
-                to="/services"
-                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-                onTouchEnd={() => setIsMobileMenuOpen(false)}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/services');
+                  setIsMobileMenuOpen(false);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/services');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors py-2"
+                type="button"
               >
                 Dienstleistungen
-              </Link>
-              <Link
-                to="/benefits"
-                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-                onTouchEnd={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/benefits');
+                  setIsMobileMenuOpen(false);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/benefits');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors py-2"
+                type="button"
               >
                 Vorteile
-              </Link>
-              <Link
-                to="/gallery"
-                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-                onTouchEnd={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/gallery');
+                  setIsMobileMenuOpen(false);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/gallery');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors py-2"
+                type="button"
               >
                 Galerie
-              </Link>
-              <Link
-                to="/history"
-                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-                onTouchEnd={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/history');
+                  setIsMobileMenuOpen(false);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/history');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors py-2"
+                type="button"
               >
                 Geschichte
-              </Link>
-              <Link
-                to="/contact"
-                className="text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors text-left py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-                onTouchEnd={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/contact');
+                  setIsMobileMenuOpen(false);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/contact');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left text-gray-300 hover:text-emerald-500 active:text-emerald-500 transition-colors py-2"
+                type="button"
               >
                 Kontakt
-              </Link>
+              </button>
             </nav>
           </div>
         )}
