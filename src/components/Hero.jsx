@@ -7,17 +7,21 @@ export function Hero() {
 
   return (
     <>
-      <section id="hero" className="relative min-h-[60vh] md:min-h-screen flex items-center pt-20 bg-black">
+      <section id="hero" className="relative min-h-[70vh] md:min-h-screen flex items-center pt-20 bg-black">
         {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className="w-full h-full object-contain opacity-40 md:object-cover md:opacity-30"
+            className="w-full h-full object-contain md:object-cover"
+            style={{ 
+              opacity: '0.5',
+              minHeight: '100%',
+              objectFit: 'contain'
+            }}
             loading="eager"
-            style={{ minHeight: '100%', objectFit: 'contain' }}
           />
-          <div className="absolute inset-0 bg-black/40 md:bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/30 md:bg-black/60"></div>
         </div>
 
         {/* Scroll Indicator - Sadece desktop'ta göster */}
