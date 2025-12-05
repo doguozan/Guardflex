@@ -55,9 +55,9 @@ const seedDatabase = async () => {
         siteName: 'GuardFlex',
         contactInfo: {
           email: 'guard.flex@hotmail.com',
-          phone: '+41 764156658',
+          phone: '+41 765230726',
           address: 'Solothurn, Switzerland',
-          whatsapp: '41764156658'
+          whatsapp: '41765230726'
         },
         hero: {
           badge: 'Qualität aus der Schweiz',

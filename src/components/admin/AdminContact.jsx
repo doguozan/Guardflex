@@ -3,10 +3,10 @@ import { Save } from 'lucide-react';
 
 export function AdminContact() {
   const [contactInfo, setContactInfo] = useState({
-    phone: '+41 764156658',
+    phone: '+41 765230726',
     email: 'guard.flex@hotmail.com',
     address: 'Solothurn, Switzerland',
-    whatsapp: '41764156658',
+    whatsapp: '41765230726',
     formTitle: 'Kontaktieren Sie uns',
     formDescription: 'Wir melden uns innerhalb von 24 Stunden bei Ihnen.'
   });

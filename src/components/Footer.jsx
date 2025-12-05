@@ -106,7 +106,7 @@ export function Footer() {
                 <Facebook size={24} />
               </a>
               <a
-                href="https://wa.me/41764156658"
+                href="https://wa.me/41765230726"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-gray-800 hover:bg-[#25D366] rounded-full flex items-center justify-center transition-all hover:scale-110"
@@ -116,7 +116,7 @@ export function Footer() {
             </div>
             <div className="space-y-2 text-gray-400">
               <p>📧 guard.flex@hotmail.com</p>
-              <p>📞 +41 764156658</p>
+              <p>📞 +41 765230726</p>
               <p>📍 Solothurn, Switzerland</p>
             </div>
           </div>

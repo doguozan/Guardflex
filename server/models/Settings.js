@@ -13,7 +13,7 @@ const settingsSchema = new mongoose.Schema({
     },
     phone: {
       type: String,
-      default: '+41 764156658'
+      default: '+41 765230726'
     },
     address: {
       type: String,
@@ -21,7 +21,7 @@ const settingsSchema = new mongoose.Schema({
     },
     whatsapp: {
       type: String,
-      default: '41764156658'
+      default: '41765230726'
     }
   },
   hero: {

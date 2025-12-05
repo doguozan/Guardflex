@@ -36,7 +36,7 @@ export function Contact() {
   };
 
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/41764156658?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.', '_blank');
+    window.open('https://wa.me/41765230726?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.', '_blank');
   };
 
   return (
@@ -66,8 +66,8 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-white mb-1">Telefon</p>
-                  <a href="tel:+41764156658" className="text-gray-400 hover:text-emerald-500">
-                    +41 764156658
+                  <a href="tel:+41765230726" className="text-gray-400 hover:text-emerald-500">
+                    +41 765230726
                   </a>
                 </div>
               </div>
@@ -183,7 +183,7 @@ export function Contact() {
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-[#252525] border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all placeholder-gray-500"
-                  placeholder="+41 764156658"
+                  placeholder="+41 765230726"
                 />
               </div>
 
