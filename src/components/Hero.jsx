@@ -7,9 +7,9 @@ export function Hero() {
 
   return (
     <>
-      <section id="hero" className="relative min-h-screen flex items-center pt-20 bg-black">
+      <section id="hero" className="relative flex items-center pt-20 bg-black">
         {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
+        <div className="inset-0 z-0">
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
@@ -24,15 +24,6 @@ export function Hero() {
           />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="animate-bounce">
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Hero Content Section */}
@@ -46,7 +37,7 @@ export function Hero() {
             </div>
 
             <h1 className="text-white mb-6 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl">
-              Maßgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen
+              Massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen
             </h1>
             
             <p className="text-gray-300 text-base sm:text-lg lg:text-xl mb-8 sm:mb-12 px-4 sm:px-0">
@@ -82,7 +73,7 @@ export function Hero() {
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
               </button>
               <button
-                onClick={() => window.open('https://wa.me/41000000000', '_blank')}
+                onClick={() => window.open('https://wa.me/41764156658', '_blank')}
                 className="bg-gray-900 border-2 border-gray-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full hover:bg-gray-800 hover:border-emerald-500 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 WhatsApp Beratung

@@ -4,14 +4,14 @@ import { useLocation } from 'react-router-dom';
 const SEO_CONFIG = {
   '/': {
     title: 'GuardFlex - Fliegengitter, Sonnenschutz & Plissee Lösungen | Schweiz',
-    description: 'Maßgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen aus der Schweiz. 100% Qualität garantiert. 2 Jahre Produkt- & Servicegarantie. Kostenloses Angebot!',
+    description: 'Massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen aus der Schweiz. 100% Qualität garantiert. 2 Jahre Produkt- & Servicegarantie. Kostenloses Angebot!',
     keywords: 'Fliegengitter, Sonnenschutz, Plissee, Fensterschutz, Insektenschutz, Schweiz, GuardFlex, Honeycomb, Rollos, Jalousien',
     ogImage: 'https://guardflex.ch/og-image.png',
     canonical: 'https://guardflex.ch/'
   },
   '/products': {
     title: 'Produkte - Fliegengitter & Sonnenschutz | GuardFlex',
-    description: 'Entdecken Sie unsere vielfältigen Produkte: Fliegengitter, Sonnenschutz, Plissee, Honeycomb und mehr. Maßgeschneiderte Lösungen für jedes Fenster.',
+    description: 'Entdecken Sie unsere vielfältigen Produkte: Fliegengitter, Sonnenschutz, Plissee, Honeycomb und mehr. Massgeschneiderte Lösungen für jedes Fenster.',
     keywords: 'Fliegengitter Produkte, Sonnenschutz Produkte, Plissee, Honeycomb, Rollos, Fensterschutz Produkte',
     ogImage: 'https://guardflex.ch/og-image-products.jpg',
     canonical: 'https://guardflex.ch/products'

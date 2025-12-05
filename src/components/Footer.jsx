@@ -19,7 +19,7 @@ export function Footer() {
               />
             </div>
             <p className="text-gray-400 mb-4">
-              Ihr vertrauenswürdiger Partner für maßgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen in der Schweiz.
+              Ihr vertrauenswürdiger Partner für massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen in der Schweiz.
             </p>
             <div className="flex items-center gap-2">
               <svg width="32" height="32" viewBox="0 0 32 32" className="rounded">
@@ -27,7 +27,6 @@ export function Footer() {
                 <rect x="13" y="6" width="6" height="20" fill="white"/>
                 <rect x="6" y="13" width="20" height="6" fill="white"/>
               </svg>
-              <span className="text-gray-400">Made in Switzerland</span>
             </div>
           </div>
 
@@ -107,7 +106,7 @@ export function Footer() {
                 <Facebook size={24} />
               </a>
               <a
-                href="https://wa.me/41000000000"
+                href="https://wa.me/41764156658"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-gray-800 hover:bg-[#25D366] rounded-full flex items-center justify-center transition-all hover:scale-110"
@@ -116,9 +115,9 @@ export function Footer() {
               </a>
             </div>
             <div className="space-y-2 text-gray-400">
-              <p>📧 info@fliegengitter-pro.ch</p>
-              <p>📞 +41 00 000 00 00</p>
-              <p>📍 Zürich, Schweiz</p>
+              <p>📧 guard.flex@hotmail.com</p>
+              <p>📞 +41 764156658</p>
+              <p>📍 Solothurn, Switzerland</p>
             </div>
           </div>
         </div>
@@ -126,9 +125,6 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} FliegengitterPro. Alle Rechte vorbehalten.
-            </p>
             <div className="flex gap-6 text-sm">
               <button className="text-gray-400 hover:text-emerald-500 transition-colors">
                 Datenschutz

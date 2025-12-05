@@ -147,7 +147,7 @@ export function AdminProducts() {
               <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center hover:border-emerald-500 transition-colors cursor-pointer">
                 <ImageIcon className="mx-auto text-gray-500 mb-2" size={48} />
                 <p className="text-gray-400">Klicken oder ziehen Sie ein Bild hierher</p>
-                <p className="text-gray-500 text-sm mt-1">Empfohlene Größe: 800x800px</p>
+                <p className="text-gray-500 text-sm mt-1">Empfohlene Groesse: 800x800px</p>
                 <input type="file" className="hidden" accept="image/*" />
               </div>
             </div>
@@ -178,7 +178,7 @@ export function AdminProducts() {
                   setEditingProduct({ ...editingProduct, name: e.target.value })
                 }
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
-                placeholder="z.B. Insektenschutz Plissee"
+                placeholder="z.B. Sonnenschutz Plissee"
               />
             </div>
 

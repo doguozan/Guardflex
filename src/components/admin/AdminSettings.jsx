@@ -11,7 +11,7 @@ export function AdminSettings() {
     socialMedia: {
       instagram: 'https://instagram.com/fliegengitterpro',
       facebook: 'https://facebook.com/fliegengitterpro',
-      whatsapp: '41000000000'
+      whatsapp: '41764156658'
     }
   });
 

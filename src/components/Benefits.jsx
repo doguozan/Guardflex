@@ -18,7 +18,7 @@ export function Benefits() {
     {
       icon: Sparkles,
       title: 'Sauberkeit und Hygiene',
-      description: 'Hält Staub, Schmutz und Pollen draußen; so bleibt Ihr Zuhause sauber.',
+      description: 'Hält Staub, Schmutz und Pollen draussen; so bleibt Ihr Zuhause sauber.',
       color: 'bg-emerald-500/10',
       iconColor: 'text-emerald-400',
     },

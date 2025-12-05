@@ -66,6 +66,7 @@ export function Header() {
                 alt="FliegengitterPro Logo" 
                 className="h-10 sm:h-12 w-auto object-contain brightness-0 invert"
               />
+              <span className="text-white text-xl sm:text-2xl font-semibold">GuardFlex</span>
             </Link>
           </div>
 

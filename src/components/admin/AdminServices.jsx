@@ -12,7 +12,7 @@ export function AdminServices() {
     },
     {
       id: 2,
-      title: 'Maßanfertigung',
+      title: 'Masanfertigung',
       description: 'Präzise nach Ihren Wünschen',
       icon: 'Ruler'
     },

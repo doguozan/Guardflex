@@ -36,7 +36,7 @@ export function Contact() {
   };
 
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/41000000000?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.', '_blank');
+    window.open('https://wa.me/41764156658?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.', '_blank');
   };
 
   return (
@@ -66,8 +66,8 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-white mb-1">Telefon</p>
-                  <a href="tel:+41000000000" className="text-gray-400 hover:text-emerald-500">
-                    +41 00 000 00 00
+                  <a href="tel:+41764156658" className="text-gray-400 hover:text-emerald-500">
+                    +41 764156658
                   </a>
                 </div>
               </div>
@@ -78,8 +78,8 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-white mb-1">E-Mail</p>
-                  <a href="mailto:info@fliegengitter-pro.ch" className="text-gray-400 hover:text-emerald-500">
-                    info@fliegengitter-pro.ch
+                  <a href="mailto:guard.flex@hotmail.com" className="text-gray-400 hover:text-emerald-500">
+                    guard.flex@hotmail.com
                   </a>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export function Contact() {
                 <div>
                   <p className="text-white mb-1">Standort</p>
                   <p className="text-gray-400">
-                    Zürich, Schweiz<br />
+                    Solothurn, Switzerland<br />
                     Wir bedienen die ganze Region
                   </p>
                 </div>
@@ -183,7 +183,7 @@ export function Contact() {
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-[#252525] border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all placeholder-gray-500"
-                  placeholder="+41 00 000 00 00"
+                  placeholder="+41 764156658"
                 />
               </div>
 

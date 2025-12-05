@@ -71,7 +71,7 @@ export function ProductsPage() {
                         'Insektenschutz': 'Insektenschutz',
                         'Sonnenschutz': 'Sonnenschutz',
                         'Plissee': 'Plissee',
-                        'Honeycomp': 'Honeycomp'
+                        'Sonnenschutz': 'Sonnenschutz'
                       };
                       
                       return (

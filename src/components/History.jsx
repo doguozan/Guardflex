@@ -45,7 +45,7 @@ export function History() {
         {/* Intro Text */}
         <div className="max-w-4xl mx-auto mb-16 bg-[#252525] border border-white/10 p-8 rounded-2xl">
           <p className="text-gray-300 mb-4">
-            Die bekannte moderne Geschichte der Fliegengitter beginnt Ende des 19. Jahrhunderts in den USA. Zu dieser Zeit waren mückenbedingte Krankheiten – insbesondere Malaria und Gelbfieber – im Sommer ein großes Problem. Die Menschen wollten ihre Häuser lüften, mussten sich aber gleichzeitig vor Insekten schützen. Genau hier kam das Fliegengitter ins Spiel.
+            Die bekannte moderne Geschichte der Fliegengitter beginnt Ende des 19. Jahrhunderts in den USA. Zu dieser Zeit waren mückenbedingte Krankheiten – insbesondere Malaria und Gelbfieber – im Sommer ein grosses Problem. Die Menschen wollten ihre Häuser lüften, mussten sich aber gleichzeitig vor Insekten schützen. Genau hier kam das Fliegengitter ins Spiel.
           </p>
           <p className="text-gray-300">
             Kurz gesagt: Das Fliegengitter entstand aus einer einfachen Drahtgeflecht-Idee, entwickelte sich aber zu einer Innovation, die die öffentliche Gesundheit ernsthaft beeinflusst hat. Ohne diese kleine Erfindung wäre die Lebensqualität in den Sommermonaten völlig anders gewesen.
@@ -95,14 +95,6 @@ export function History() {
           </div>
         </div>
 
-        {/* Bottom Note */}
-        <div className="mt-16 text-center max-w-4xl mx-auto">
-          <div className="bg-emerald-500/10 border border-emerald-500/20 p-8 rounded-2xl">
-            <p className="text-gray-300">
-              Diese Entwicklungsgeschichte können Sie gerne als professionelle Inhaltsquelle für Ihre Website verwenden – sie stärkt die Botschaft Ihrer Expertise im Bereich Fliegengitter.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

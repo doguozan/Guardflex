@@ -5,7 +5,7 @@ export function WhatsAppButton() {
 
   const handleClick = () => {
     window.open(
-      'https://wa.me/41000000000?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.',
+      'https://wa.me/41764156658?text=Hallo,%20ich%20interessiere%20mich%20für%20Ihre%20Fliegengitter-Lösungen.',
       '_blank'
     );
   };

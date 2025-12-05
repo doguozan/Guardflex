@@ -5,7 +5,7 @@ import { RichTextEditor } from './RichTextEditor.jsx';
 export function AdminHome() {
   const [heroData, setHeroData] = useState({
     badge: 'Qualität aus der Schweiz',
-    title: 'Maßgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen',
+    title: 'Massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen',
     description: 'Wir sind Ihr vertrauenswürdiger Partner in Ihrer Nähe für individuell gestaltete Fliegengitter, Sonnenschutz und Plissee-Lösungen!',
     image: '',
     features: [
@@ -31,7 +31,7 @@ export function AdminHome() {
           <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center hover:border-emerald-500 transition-colors cursor-pointer">
             <ImageIcon className="mx-auto text-gray-500 mb-2" size={48} />
             <p className="text-gray-400">Klicken oder ziehen Sie ein Bild hierher</p>
-            <p className="text-gray-500 text-sm mt-1">Empfohlene Größe: 1920x1080px</p>
+            <p className="text-gray-500 text-sm mt-1">Empfohlene Groesse: 1920x1080px</p>
             <input type="file" className="hidden" accept="image/*" />
           </div>
         </div>

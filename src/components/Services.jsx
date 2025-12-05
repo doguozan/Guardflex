@@ -9,8 +9,8 @@ export function Services() {
     },
     {
       icon: Ruler,
-      title: 'Maßanfertigung',
-      description: 'Präzise Vermessung und Herstellung nach Ihren exakten Maßen.',
+      title: 'Masanfertigung',
+      description: 'Präzise Vermessung und Herstellung nach Ihren exakten Massen.',
     },
     {
       icon: Wrench,
