@@ -108,6 +108,8 @@ export function ProductsPage() {
                     src={getProductImage(product.image)}
                     alt={product.name}
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="p-6">
@@ -160,6 +162,8 @@ export function ProductsPage() {
                     src={getProductImage(selectedProduct.image)}
                     alt={selectedProduct.name}
                     className="w-full h-full object-contain"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
 

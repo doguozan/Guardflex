@@ -55,12 +55,31 @@ export default defineConfig({
     target: 'esnext',
     outDir: 'build',
     assetsDir: 'assets',
-    // Asset'lerin doğru şekilde kopyalanması için
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Console.log'ları production'da kaldır
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+          ],
+        },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
   // Public klasörünü assets klasörüne kopyalamak için
   publicDir: 'public',
