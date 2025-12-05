@@ -2,7 +2,7 @@ export const products = [
   {
     id: 'insektenschutz-1',
     name: 'Sonnenschutz Plissee',
-    category: 'Insektenschutz',
+    category: 'Sonnenschutz',
     image: '/GuardFlex-urunler/1-Profil İçi Zıgıl Sistem-Honeycomp/1-Profil İçi Zıgıl Sistem-Honeycomp.png',
     features: [
       'Flexibles Plissee-System',

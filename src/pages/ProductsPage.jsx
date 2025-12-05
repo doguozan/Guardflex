@@ -31,9 +31,7 @@ export function ProductsPage() {
             <h1 className="text-white mb-4">Unsere Produkte</h1>
             <p className="text-gray-300 text-xl max-w-3xl mx-auto">
               Entdecken Sie unsere hochwertigen Fliegengitter-,
-              Sonnenschutz- und Plissee-Lösungen. Alle Produkte
-              werden in der Schweiz mit höchster Qualität
-              gefertigt.
+              Sonnenschutz- und Plissee-Lösungen.
             </p>
           </div>
         </div>
