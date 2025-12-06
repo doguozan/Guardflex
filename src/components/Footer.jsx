@@ -90,7 +90,7 @@ export function Footer() {
             <h3 className="text-lg mb-4">Folgen Sie uns</h3>
             <div className="flex gap-4 mb-6">
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/guardflex_/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 bg-gray-800 hover:bg-emerald-500 rounded-full flex items-center justify-center transition-all hover:scale-110"

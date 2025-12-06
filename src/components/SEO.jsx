@@ -144,7 +144,7 @@ export function SEO() {
         availableLanguage: 'German'
       },
       sameAs: [
-        'https://www.instagram.com/guardflex',
+        'https://www.instagram.com/guardflex_/',
         'https://www.facebook.com/guardflex'
       ]
     };

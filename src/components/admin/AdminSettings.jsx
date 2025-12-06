@@ -9,7 +9,7 @@ export function AdminSettings() {
     headerStyle: 'fixed',
     footerStyle: '3-column',
     socialMedia: {
-      instagram: 'https://instagram.com/fliegengitterpro',
+      instagram: 'https://www.instagram.com/guardflex_/',
       facebook: 'https://facebook.com/fliegengitterpro',
       whatsapp: '41765230726'
     }
