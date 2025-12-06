@@ -68,8 +68,7 @@ export function ProductsPage() {
                         'Alle': 'Alle',
                         'Insektenschutz': 'Insektenschutz',
                         'Sonnenschutz': 'Sonnenschutz',
-                        'Plissee': 'Plissee',
-                        'Sonnenschutz': 'Sonnenschutz'
+                        'Plissee': 'Plissee'
                       };
                       
                       return (
