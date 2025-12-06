@@ -180,7 +180,7 @@ export function ProductSlider() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-3 sm:p-4">
+                  <div className="p-[10px]">
                     <div className="text-emerald-400 text-xs mb-1.5 font-medium animate-fade-in">
                       {product.category}
                     </div>
