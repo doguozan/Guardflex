@@ -109,6 +109,10 @@ export function ProductsPage() {
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                     loading="lazy"
                     decoding="async"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    style={{ 
+                      contentVisibility: 'auto',
+                    }}
                   />
                 </div>
                 <div className="p-6">
@@ -161,8 +165,9 @@ export function ProductsPage() {
                     src={getProductImage(selectedProduct.image)}
                     alt={selectedProduct.name}
                     className="w-full h-full object-contain"
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>
 

@@ -96,6 +96,9 @@ export function Benefits() {
                 src={benefitsImage}
                 alt="Fliegengitter"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             )}
           </div>

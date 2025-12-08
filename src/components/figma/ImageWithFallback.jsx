@@ -10,7 +10,7 @@ export function ImageWithFallback(props) {
     setDidError(true)
   }
 
-  const { src, alt, style, className, ...rest } = props
+  const { src, alt, style, className, loading = 'lazy', decoding = 'async', sizes, ...rest } = props
 
   return didError ? (
     <div
@@ -22,7 +22,17 @@ export function ImageWithFallback(props) {
       </div>
     </div>
   ) : (
-    <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className} 
+      style={style} 
+      loading={loading}
+      decoding={decoding}
+      sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+      {...rest} 
+      onError={handleError} 
+    />
   )
 }
 
