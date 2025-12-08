@@ -1,11 +1,32 @@
 import { useState } from 'react';
 import { Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
+
+// Import gallery images from our-works folder
+import galleryImage2 from '../../assets/our-works/2.jpeg';
+import galleryImage3 from '../../assets/our-works/3.jpeg';
+import galleryImage4 from '../../assets/our-works/4.jpeg';
+import galleryImage5 from '../../assets/our-works/5.jpeg';
+import galleryImage7 from '../../assets/our-works/7.jpeg';
+
+// Import gallery videos from Guard-video folder
+import galleryVideo1 from '../../assets/Guard-video/video1.mp4';
+import galleryVideo2 from '../../assets/Guard-video/video2.mp4';
+import galleryVideo3 from '../../assets/Guard-video/video3.mp4';
+import galleryVideo4 from '../../assets/Guard-video/video4.mp4';
 
 export function AdminGallery() {
+  // Initialize with actual gallery images
   const [images, setImages] = useState([
-    { id: 1, url: '', alt: 'Galerie Bild 1' },
-    { id: 2, url: '', alt: 'Galerie Bild 2' },
-    { id: 3, url: '', alt: 'Galerie Bild 3' },
+    { id: 1, url: galleryImage2, alt: 'Unsere Arbeit', type: 'image' },
+    { id: 2, url: galleryImage3, alt: 'Unsere Arbeit', type: 'image' },
+    { id: 3, url: galleryImage4, alt: 'Unsere Arbeit', type: 'image' },
+    { id: 4, url: galleryImage5, alt: 'Unsere Arbeit', type: 'image' },
+    { id: 5, url: galleryImage7, alt: 'Unsere Arbeit', type: 'image' },
+    { id: 6, url: galleryVideo1, alt: 'Unsere Arbeit', type: 'video' },
+    { id: 7, url: galleryVideo2, alt: 'Unsere Arbeit', type: 'video' },
+    { id: 8, url: galleryVideo3, alt: 'Unsere Arbeit', type: 'video' },
+    { id: 9, url: galleryVideo4, alt: 'Unsere Arbeit', type: 'video' },
   ]);
 
   const addImage = () => {
@@ -38,18 +59,42 @@ export function AdminGallery() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {images.map((image) => (
             <div key={image.id} className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
-              <div className="aspect-square bg-gray-900 flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors">
+              <div className="aspect-square bg-gray-900 flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors relative overflow-hidden">
                 {image.url ? (
-                  <img src={image.url} alt={image.alt} className="w-full h-full object-cover" />
+                  image.type === 'video' ? (
+                    <video
+                      src={image.url}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                    />
+                  ) : (
+                    <ImageWithFallback
+                      src={image.url}
+                      alt={image.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  )
                 ) : (
                   <div className="text-center">
                     <ImageIcon className="mx-auto text-gray-600 mb-2" size={48} />
                     <p className="text-gray-500 text-sm">Klicken zum Hochladen</p>
                   </div>
                 )}
-                <input type="file" className="hidden" accept="image/*" />
+                {image.type === 'video' && (
+                  <div className="absolute top-2 right-2 bg-blue-500/80 text-white text-xs px-2 py-1 rounded">
+                    Video
+                  </div>
+                )}
               </div>
               <div className="p-4">
+                <div className="mb-2">
+                  <span className="text-xs text-gray-400">
+                    {image.type === 'video' ? 'Video' : 'Bild'}
+                  </span>
+                </div>
                 <input
                   type="text"
                   value={image.alt}
