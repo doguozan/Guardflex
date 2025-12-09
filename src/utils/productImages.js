@@ -113,7 +113,6 @@ export const getProductImage = (imageAsset) => {
     // Public klasöründeki dosyalar için direkt path kullan
     // Public klasörü build'de root'a kopyalanır, bu yüzden path aynı kalır
     // Mobil ve desktop'ta çalışması için mutlak path kullan
-    // Production'da ve development'ta aynı path çalışmalı
     
     // Production'da: Public folder'daki dosyalar root'a kopyalanır
     // Development'ta: Vite dev server public folder'ı serve eder
@@ -121,7 +120,11 @@ export const getProductImage = (imageAsset) => {
     
     // Mobil cihazlarda da çalışması için mutlak path kullan
     // Base URL ekleme (zaten root'tan başlıyor)
-    return cleanPath;
+    // Ancak production'da base URL'i kontrol et
+    const baseUrl = import.meta.env.BASE_URL || '';
+    const finalPath = baseUrl ? baseUrl.replace(/\/$/, '') + cleanPath : cleanPath;
+    
+    return finalPath;
   }
 
   // figma:asset/ formatı için
