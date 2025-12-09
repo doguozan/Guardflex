@@ -15,8 +15,7 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Insektenschutz', 'Sonnenschutz', 'Plissee'],
-    index: true
+    enum: ['Insektenschutz', 'Sonnenschutz', 'Plissee']
   },
   image: {
     type: String,

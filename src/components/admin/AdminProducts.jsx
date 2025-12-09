@@ -1,12 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Save, X, Image as ImageIcon } from 'lucide-react';
-import { products } from '../../data/products';
 import { RichTextEditor } from './RichTextEditor.jsx';
+import { api } from '../../utils/api';
 
 export function AdminProducts() {
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Load products from API
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const products = await api.getProducts();
+      setProductList(products);
+    } catch (err) {
+      console.error('Error loading products:', err);
+      setError('Produkte konnten nicht geladen werden.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (product) => {
     setEditingProduct({ ...product });
@@ -15,7 +36,6 @@ export function AdminProducts() {
 
   const handleAdd = () => {
     setEditingProduct({
-      id: Date.now().toString(),
       name: '',
       category: 'Insektenschutz',
       image: '',
@@ -25,22 +45,38 @@ export function AdminProducts() {
     setIsAdding(true);
   };
 
-  const handleSave = () => {
-    if (isAdding) {
-      setProductList([...productList, editingProduct]);
-    } else {
-      setProductList(
-        productList.map((p) => (p.id === editingProduct.id ? editingProduct : p))
-      );
+  const handleSave = async () => {
+    try {
+      setError(null);
+      if (isAdding) {
+        await api.createProduct(editingProduct);
+        alert('Produkt erfolgreich erstellt!');
+      } else {
+        await api.updateProduct(editingProduct._id, editingProduct);
+        alert('Produkt erfolgreich aktualisiert!');
+      }
+      setEditingProduct(null);
+      setIsAdding(false);
+      await loadProducts(); // Reload products
+    } catch (err) {
+      console.error('Error saving product:', err);
+      setError(err.message || 'Fehler beim Speichern des Produkts.');
+      alert('Fehler beim Speichern: ' + (err.message || 'Unbekannter Fehler'));
     }
-    setEditingProduct(null);
-    setIsAdding(false);
-    alert('Produkt gespeichert!');
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirm('Möchten Sie dieses Produkt wirklich löschen?')) {
-      setProductList(productList.filter((p) => p.id !== id));
+      try {
+        setError(null);
+        await api.deleteProduct(id);
+        alert('Produkt erfolgreich gelöscht!');
+        await loadProducts(); // Reload products
+      } catch (err) {
+        console.error('Error deleting product:', err);
+        setError(err.message || 'Fehler beim Löschen des Produkts.');
+        alert('Fehler beim Löschen: ' + (err.message || 'Unbekannter Fehler'));
+      }
     }
   };
 
@@ -76,50 +112,70 @@ export function AdminProducts() {
         </button>
       </div>
 
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
+          <p className="text-red-400">{error}</p>
+        </div>
+      )}
+
       {/* Product List */}
       {!editingProduct && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {productList.map((product) => (
-            <div
-              key={product.id}
-              className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden"
-            >
-              <div className="aspect-square bg-gray-800 flex items-center justify-center">
-                {product.image ? (
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <ImageIcon className="text-gray-600" size={64} />
-                )}
-              </div>
-              <div className="p-4">
-                <div className="text-emerald-400 text-sm mb-1">{product.category}</div>
-                <h3 className="text-white mb-2">{product.name}</h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                  {product.description}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(product)}
-                    className="flex-1 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Edit size={16} />
-                    Bearbeiten
-                  </button>
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    className="bg-red-500/20 text-red-400 px-4 py-2 rounded hover:bg-red-500/30 transition-colors"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
+        <>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
             </div>
-          ))}
-        </div>
+          ) : productList.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400">Keine Produkte vorhanden.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {productList.map((product) => (
+                <div
+                  key={product._id || product.id}
+                  className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden"
+                >
+                  <div className="aspect-square bg-gray-800 flex items-center justify-center">
+                    {product.image ? (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <ImageIcon className="text-gray-600" size={64} />
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <div className="text-emerald-400 text-sm mb-1">{product.category}</div>
+                    <h3 className="text-white mb-2">{product.name}</h3>
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                      {product.description}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(product)}
+                        className="flex-1 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Edit size={16} />
+                        Bearbeiten
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product._id || product.id)}
+                        className="bg-red-500/20 text-red-400 px-4 py-2 rounded hover:bg-red-500/30 transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Edit/Add Form */}

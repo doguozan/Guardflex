@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Send, MessageCircle } from 'lucide-react';
+import { api } from '../utils/api';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -11,21 +12,33 @@ export function Contact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('idle');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await api.submitContact({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        message: formData.message,
+      });
+      
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '' });
       
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 3000);
-    }, 1500);
+    } catch (err) {
+      setError(err.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -135,6 +148,14 @@ export function Contact() {
               <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
                 <p className="text-emerald-400">
                   Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden.
+                </p>
+              </div>
+            )}
+
+            {submitStatus === 'error' && error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <p className="text-red-400">
+                  {error}
                 </p>
               </div>
             )}
