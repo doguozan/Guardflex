@@ -13,7 +13,7 @@ export function ResponsiveImage({
   className = '',
   style = {},
   loading = 'lazy',
-  fetchPriority = 'auto',
+  fetchpriority = 'auto',
   sizes,
   srcSet,
   onLoad,
@@ -119,7 +119,7 @@ export function ResponsiveImage({
           sizes={defaultSizes}
           alt={alt}
           loading={loading}
-          fetchPriority={fetchPriority}
+          fetchpriority={fetchpriority}
           decoding="async"
           className={`transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'

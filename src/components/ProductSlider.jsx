@@ -1,19 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { products } from '../data/products';
 import { getProductImage } from '../utils/productImages';
+import { api } from '../utils/api';
 
 export function ProductSlider() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   
+  // Load products from API
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await api.getProducts();
+        // İlk 6 ürünü göster
+        setProducts(data.slice(0, 6));
+      } catch (err) {
+        console.error('Error loading products:', err);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
   // İlk 6 ürünü göster
-  const featuredProducts = products.slice(0, 6);
+  const featuredProducts = products;
   
   // Slider'da gösterilecek ürün sayısı (responsive)
   const getVisibleCount = () => {
@@ -146,64 +167,75 @@ export function ProductSlider() {
           </button>
 
           {/* Products Slider - Daha kompakt gap ve smooth animasyon */}
-          <div className="overflow-hidden rounded-xl">
-            <div
-              ref={sliderRef}
-              className="flex transition-transform gap-3 sm:gap-4 touch-pan-y"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              style={{
-                transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
-                willChange: 'transform',
-                transitionDuration: '400ms',
-                transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-                touchAction: 'pan-y pinch-zoom',
-              }}
-            >
-              {featuredProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  onClick={() => handleProductClick(product.id)}
-                  className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-500 group flex-shrink-0 transform hover:-translate-y-2"
-                  style={{
-                    width: `calc(${100 / visibleCount}% - ${(visibleCount - 1) * 12 / visibleCount}px)`,
-                    animationDelay: `${index * 50}ms`,
-                  }}
-                >
-                  <div className="aspect-square overflow-hidden bg-gray-800/50 relative">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                    <img
-                      src={getProductImage(product.image)}
-                      alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
-                      loading="lazy"
-                      decoding="async"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      style={{ 
-                        contentVisibility: 'auto',
-                      }}
-                    />
-                  </div>
-                  <div className="p-[10px]">
-                    <div className="text-emerald-400 text-xs mb-1.5 font-medium animate-fade-in">
-                      {product.category}
-                    </div>
-                    <h3 className="text-white mb-1.5 sm:mb-2 text-sm sm:text-base line-clamp-2 group-hover:text-emerald-400 transition-colors duration-300">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <button className="text-emerald-500 hover:text-emerald-400 transition-all duration-300 text-xs sm:text-sm font-medium group-hover:translate-x-1 inline-flex items-center gap-1">
-                      Details anzeigen
-                      <span className="inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
             </div>
-          </div>
+          ) : featuredProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400">Keine Produkte verfügbar.</p>
+            </div>
+          ) : (
+            <div className="overflow-hidden rounded-xl">
+              <div
+                ref={sliderRef}
+                className="flex transition-transform gap-3 sm:gap-4 touch-pan-y"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{
+                  transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
+                  willChange: 'transform',
+                  transitionDuration: '400ms',
+                  transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                  touchAction: 'pan-y pinch-zoom',
+                }}
+              >
+                {featuredProducts.map((product, index) => (
+                  <div
+                    key={product._id || product.id}
+                    onClick={() => handleProductClick(product._id || product.id)}
+                    className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-500 group flex-shrink-0 transform hover:-translate-y-2"
+                    style={{
+                      width: `calc(${100 / visibleCount}% - ${(visibleCount - 1) * 12 / visibleCount}px)`,
+                      animationDelay: `${index * 50}ms`,
+                    }}
+                  >
+                    <div className="aspect-square overflow-hidden bg-gray-800/50 relative">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                      <img
+                        src={getProductImage(product.image)}
+                        alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        style={{ 
+                          contentVisibility: 'auto',
+                        }}
+                      />
+                    </div>
+                    <div className="p-[10px]">
+                      <div className="text-emerald-400 text-xs mb-1.5 font-medium animate-fade-in">
+                        {product.category}
+                      </div>
+                      <h3 className="text-white mb-1.5 sm:mb-2 text-sm sm:text-base line-clamp-2 group-hover:text-emerald-400 transition-colors duration-300">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2">
+                        {product.description}
+                      </p>
+                      <button className="text-emerald-500 hover:text-emerald-400 transition-all duration-300 text-xs sm:text-sm font-medium group-hover:translate-x-1 inline-flex items-center gap-1">
+                        Details anzeigen
+                        <span className="inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Dots Indicator - Daha kompakt */}
           <div className="flex justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8">

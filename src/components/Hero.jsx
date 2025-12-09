@@ -8,7 +8,7 @@ export function Hero() {
     link.rel = 'preload';
     link.as = 'image';
     link.href = heroImage;
-    link.fetchPriority = 'high';
+    link.setAttribute('fetchpriority', 'high');
     document.head.appendChild(link);
 
     return () => {
@@ -26,7 +26,7 @@ export function Hero() {
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
             className="w-full h-full object-cover opacity-70"
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             decoding="sync"
             sizes="100vw"
             style={{ 

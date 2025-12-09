@@ -1,14 +1,40 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { products, productCategories } from "../data/products";
 import { X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { getProductImage } from "../utils/productImages";
+import { api } from "../utils/api";
+
+const productCategories = ['Alle', 'Insektenschutz', 'Sonnenschutz', 'Plissee'];
 
 export function ProductsPage() {
   const location = useLocation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Alle");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Load products from API
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await api.getProducts();
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error loading products:', err);
+        setError('Produkte konnten nicht geladen werden.');
+        // Fallback to empty array
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   // Header'dan gelen kategoriyi kontrol et
   useEffect(() => {
@@ -94,44 +120,69 @@ export function ProductsPage() {
             </div>
           </div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="text-center py-12">
+              <p className="text-red-400">{error}</p>
+            </div>
+          )}
+
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                onClick={() => setSelectedProduct(product)}
-                className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
-              >
-                <div className="aspect-square overflow-hidden bg-gray-800">
-                  <img
-                    src={getProductImage(product.image)}
-                    alt={product.name}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    style={{ 
-                      contentVisibility: 'auto',
-                    }}
-                  />
+          {!loading && !error && (
+            <>
+              {filteredProducts.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-400">Keine Produkte gefunden.</p>
                 </div>
-                <div className="p-6">
-                  <div className="text-emerald-400 text-sm mb-2">
-                    {product.category}
-                  </div>
-                  <h3 className="text-white mb-3">
-                    {product.name}
-                  </h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <button className="text-emerald-500 hover:text-emerald-400 transition-colors">
-                    Details anzeigen →
-                  </button>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredProducts.map((product) => (
+                    <div
+                      key={product._id || product.id}
+                      onClick={() => setSelectedProduct(product)}
+                      className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
+                    >
+                      <div className="aspect-square overflow-hidden bg-gray-800">
+                        <img
+                          src={getProductImage(product.image)}
+                          alt={product.name}
+                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                          loading="lazy"
+                          decoding="async"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          style={{ 
+                            contentVisibility: 'auto',
+                          }}
+                        />
+                      </div>
+                      <div className="p-6">
+                        <div className="text-emerald-400 text-sm mb-2">
+                          {product.category}
+                        </div>
+                        <h3 className="text-white mb-3">
+                          {product.name}
+                        </h3>
+                        <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                          {product.description}
+                        </p>
+                        <button className="text-emerald-500 hover:text-emerald-400 transition-colors">
+                          Details anzeigen →
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </>
+          )}
         </div>
       </section>
 
