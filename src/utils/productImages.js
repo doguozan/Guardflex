@@ -86,7 +86,7 @@ export const getProductImage = (imageAsset) => {
     // Path'i normalize et (başındaki / olmadan da çalışsın)
     const cleanPath = normalizedAsset.startsWith('/') ? normalizedAsset : '/' + normalizedAsset;
     
-    // Önce tam path ile ara
+    // Önce tam path ile ara (build time'da hash'lenmiş asset'ler için)
     if (imagePathMap[cleanPath]) {
       return imagePathMap[cleanPath];
     }
@@ -106,17 +106,14 @@ export const getProductImage = (imageAsset) => {
       return foundByFileName;
     }
     
-    // Public klasöründeki dosyalar build'de root'a kopyalanır
-    // Bu yüzden direkt /GuardFlex-urunler/ path'ini kullanabiliriz
-    // Hem development hem production'da aynı path çalışır
-    
-    // Önce import.meta.glob mapping'ini kontrol et (build time'da hash'lenmiş asset'ler için)
-    if (imagePathMap[cleanPath] || imagePathMap[normalizedAsset]) {
-      return imagePathMap[cleanPath] || imagePathMap[normalizedAsset];
-    }
-    
     // Public klasöründeki dosyalar için direkt path kullan
     // Public klasörü build'de root'a kopyalanır, bu yüzden path aynı kalır
+    // Mobil ve desktop'ta çalışması için mutlak path kullan
+    // Production'da ve development'ta aynı path çalışmalı
+    
+    // Her zaman başında / olan path kullan (mutlak path)
+    // Bu hem development hem production'da çalışır
+    // Mobil cihazlarda da çalışması için base URL ekleme (mutlak path zaten çalışır)
     return cleanPath;
   }
 

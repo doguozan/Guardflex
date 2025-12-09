@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getProductImage } from '../utils/productImages';
 import { api } from '../utils/api';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export function ProductSlider() {
   const navigate = useNavigate();
@@ -204,7 +205,7 @@ export function ProductSlider() {
                   >
                     <div className="aspect-square overflow-hidden bg-gray-800/50 relative">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                      <img
+                      <ImageWithFallback
                         src={getProductImage(product.image)}
                         alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"

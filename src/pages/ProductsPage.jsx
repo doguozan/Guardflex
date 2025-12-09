@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { getProductImage } from "../utils/productImages";
 import { api } from "../utils/api";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 const productCategories = ['Alle', 'Insektenschutz', 'Sonnenschutz', 'Plissee'];
 
@@ -151,7 +152,7 @@ export function ProductsPage() {
                       className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
                     >
                       <div className="aspect-square overflow-hidden bg-gray-800">
-                        <img
+                        <ImageWithFallback
                           src={getProductImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
@@ -212,7 +213,7 @@ export function ProductsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Product Image */}
                 <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square">
-                  <img
+                  <ImageWithFallback
                     src={getProductImage(selectedProduct.image)}
                     alt={selectedProduct.name}
                     className="w-full h-full object-contain"

@@ -7,6 +7,9 @@ export function ImageWithFallback(props) {
   const [didError, setDidError] = useState(false)
 
   const handleError = () => {
+    if (import.meta.env.DEV) {
+      console.warn('ImageWithFallback: Failed to load image', src);
+    }
     setDidError(true)
   }
 
