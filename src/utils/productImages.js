@@ -64,7 +64,9 @@ const findImageByFileName = (imagePath) => {
  */
 export const getProductImage = (imageAsset) => {
   if (!imageAsset || typeof imageAsset !== 'string') {
-    console.warn('getProductImage: Empty or invalid imageAsset', imageAsset);
+    if (import.meta.env.DEV) {
+      console.warn('getProductImage: Empty or invalid imageAsset', imageAsset);
+    }
     return '';
   }
 
@@ -76,21 +78,23 @@ export const getProductImage = (imageAsset) => {
   // Path'i normalize et
   const normalizedAsset = normalizePath(imageAsset);
   
-  // Debug için (hem development hem production'da - mobil debug için)
-  console.log('getProductImage:', { 
-    imageAsset, 
-    normalizedAsset, 
-    isDev: import.meta.env.DEV,
-    isProd: import.meta.env.PROD,
-    baseUrl: import.meta.env.BASE_URL
-  });
+  // Debug için (sadece development'ta)
+  if (import.meta.env.DEV) {
+    console.log('getProductImage:', { 
+      imageAsset, 
+      normalizedAsset, 
+      isDev: import.meta.env.DEV,
+      isProd: import.meta.env.PROD,
+      baseUrl: import.meta.env.BASE_URL
+    });
+  }
 
-  // /GuardFlex-urunler/ ile başlıyorsa
+  // /GuardFlex-urunler/ ile başlıyorsa (public klasöründeki dosyalar)
   if (normalizedAsset.startsWith('/GuardFlex-urunler/') || normalizedAsset.startsWith('GuardFlex-urunler/')) {
     // Path'i normalize et (başındaki / olmadan da çalışsın)
     const cleanPath = normalizedAsset.startsWith('/') ? normalizedAsset : '/' + normalizedAsset;
     
-    // Önce tam path ile ara (build time'da hash'lenmiş asset'ler için)
+    // Önce src/assets'teki dosyaları kontrol et (build time'da hash'lenmiş asset'ler için)
     if (imagePathMap[cleanPath]) {
       return imagePathMap[cleanPath];
     }
@@ -113,16 +117,10 @@ export const getProductImage = (imageAsset) => {
     // Public klasöründeki dosyalar için direkt path kullan
     // Public klasörü build'de root'a kopyalanır, bu yüzden path aynı kalır
     // Mobil ve desktop'ta çalışması için mutlak path kullan
-    
-    // Production'da: Public folder'daki dosyalar root'a kopyalanır
-    // Development'ta: Vite dev server public folder'ı serve eder
-    // Her iki durumda da mutlak path (/GuardFlex-urunler/...) çalışır
-    
-    // Mobil cihazlarda da çalışması için mutlak path kullan
     // Base URL ekleme (zaten root'tan başlıyor)
-    // Ancak production'da base URL'i kontrol et
+    // Production'da base URL genellikle boş veya '/' olur
     const baseUrl = import.meta.env.BASE_URL || '';
-    const finalPath = baseUrl ? baseUrl.replace(/\/$/, '') + cleanPath : cleanPath;
+    const finalPath = baseUrl && baseUrl !== '/' ? baseUrl.replace(/\/$/, '') + cleanPath : cleanPath;
     
     return finalPath;
   }

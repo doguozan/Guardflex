@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getProductImage } from '../utils/productImages';
 import { api } from '../utils/api';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { products as staticProducts } from '../data/products';
 
 export function ProductSlider() {
   const navigate = useNavigate();
@@ -21,11 +22,20 @@ export function ProductSlider() {
       try {
         setLoading(true);
         const data = await api.getProducts();
-        // İlk 6 ürünü göster
-        setProducts(data.slice(0, 6));
+        // API boş dönerse veya hata olursa statik veriye düş
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data.slice(0, 6));
+        } else {
+          // API boş döndü, statik veriyi kullan
+          if (import.meta.env.DEV) {
+            console.warn('ProductSlider: API returned empty array, using static data');
+          }
+          setProducts(staticProducts.slice(0, 6));
+        }
       } catch (err) {
-        console.error('Error loading products:', err);
-        setProducts([]);
+        console.error('ProductSlider: Error loading products from API:', err);
+        // Fallback to static data
+        setProducts(staticProducts.slice(0, 6));
       } finally {
         setLoading(false);
       }
