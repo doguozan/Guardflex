@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { getProductImage } from "../utils/productImages";
 import { api } from "../utils/api";
+import { products as staticProducts } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 const productCategories = ['Alle', 'Insektenschutz', 'Sonnenschutz', 'Plissee'];
@@ -22,13 +23,23 @@ export function ProductsPage() {
       try {
         setLoading(true);
         const data = await api.getProducts();
-        setProducts(data);
-        setError(null);
+        // Eğer API boş dönerse statik veriye düş
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+          setError(null);
+        } else {
+          // API boş döndü, statik veriyi kullan
+          if (import.meta.env.DEV) {
+            console.warn('ProductsPage: API returned empty array, using static data');
+          }
+          setProducts(staticProducts);
+          setError(null);
+        }
       } catch (err) {
-        console.error('Error loading products:', err);
+        console.error('ProductsPage: Error loading products from API:', err);
         setError('Produkte konnten nicht geladen werden.');
-        // Fallback to empty array
-        setProducts([]);
+        // Fallback to static data
+        setProducts(staticProducts);
       } finally {
         setLoading(false);
       }

@@ -6,19 +6,21 @@ const ERROR_IMG_SRC =
 export function ImageWithFallback(props) {
   const [didError, setDidError] = useState(false)
 
+  const { src, alt, style, className, loading = 'lazy', decoding = 'async', sizes, ...rest } = props
+
   const handleError = () => {
     // Mobil debug için production'da da log tut
-    console.warn('ImageWithFallback: Failed to load image', {
-      src,
-      isDev: import.meta.env.DEV,
-      isProd: import.meta.env.PROD,
-      userAgent: navigator.userAgent,
-      location: window.location.href
-    });
+    if (import.meta.env.DEV) {
+      console.warn('ImageWithFallback: Failed to load image', {
+        src,
+        isDev: import.meta.env.DEV,
+        isProd: import.meta.env.PROD,
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+        location: typeof window !== 'undefined' ? window.location.href : 'unknown'
+      });
+    }
     setDidError(true)
   }
-
-  const { src, alt, style, className, loading = 'lazy', decoding = 'async', sizes, ...rest } = props
 
   return didError ? (
     <div
