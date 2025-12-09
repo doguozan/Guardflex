@@ -76,10 +76,14 @@ export const getProductImage = (imageAsset) => {
   // Path'i normalize et
   const normalizedAsset = normalizePath(imageAsset);
   
-  // Debug için (development'ta)
-  if (import.meta.env.DEV) {
-    console.log('getProductImage:', { imageAsset, normalizedAsset });
-  }
+  // Debug için (hem development hem production'da - mobil debug için)
+  console.log('getProductImage:', { 
+    imageAsset, 
+    normalizedAsset, 
+    isDev: import.meta.env.DEV,
+    isProd: import.meta.env.PROD,
+    baseUrl: import.meta.env.BASE_URL
+  });
 
   // /GuardFlex-urunler/ ile başlıyorsa
   if (normalizedAsset.startsWith('/GuardFlex-urunler/') || normalizedAsset.startsWith('GuardFlex-urunler/')) {
@@ -111,9 +115,12 @@ export const getProductImage = (imageAsset) => {
     // Mobil ve desktop'ta çalışması için mutlak path kullan
     // Production'da ve development'ta aynı path çalışmalı
     
-    // Her zaman başında / olan path kullan (mutlak path)
-    // Bu hem development hem production'da çalışır
-    // Mobil cihazlarda da çalışması için base URL ekleme (mutlak path zaten çalışır)
+    // Production'da: Public folder'daki dosyalar root'a kopyalanır
+    // Development'ta: Vite dev server public folder'ı serve eder
+    // Her iki durumda da mutlak path (/GuardFlex-urunler/...) çalışır
+    
+    // Mobil cihazlarda da çalışması için mutlak path kullan
+    // Base URL ekleme (zaten root'tan başlıyor)
     return cleanPath;
   }
 
