@@ -64,6 +64,7 @@ const findImageByFileName = (imagePath) => {
  */
 export const getProductImage = (imageAsset) => {
   if (!imageAsset || typeof imageAsset !== 'string') {
+    console.warn('getProductImage: Empty or invalid imageAsset', imageAsset);
     return '';
   }
 
@@ -74,46 +75,49 @@ export const getProductImage = (imageAsset) => {
 
   // Path'i normalize et
   const normalizedAsset = normalizePath(imageAsset);
+  
+  // Debug için (development'ta)
+  if (import.meta.env.DEV) {
+    console.log('getProductImage:', { imageAsset, normalizedAsset });
+  }
 
   // /GuardFlex-urunler/ ile başlıyorsa
-  if (normalizedAsset.startsWith('/GuardFlex-urunler/')) {
+  if (normalizedAsset.startsWith('/GuardFlex-urunler/') || normalizedAsset.startsWith('GuardFlex-urunler/')) {
+    // Path'i normalize et (başındaki / olmadan da çalışsın)
+    const cleanPath = normalizedAsset.startsWith('/') ? normalizedAsset : '/' + normalizedAsset;
+    
     // Önce tam path ile ara
-    if (imagePathMap[normalizedAsset]) {
-      return imagePathMap[normalizedAsset];
+    if (imagePathMap[cleanPath]) {
+      return imagePathMap[cleanPath];
     }
     
     // Path'in son kısmıyla ara (klasör + dosya)
-    const pathParts = normalizedAsset.split('/');
+    const pathParts = cleanPath.split('/').filter(p => p);
     if (pathParts.length >= 2) {
-      const lastTwoParts = pathParts.slice(-2).join('/');
+      const lastTwoParts = '/' + pathParts.slice(-2).join('/');
       if (imagePathMap[lastTwoParts]) {
         return imagePathMap[lastTwoParts];
       }
     }
     
     // Dosya adına göre ara
-    const foundByFileName = findImageByFileName(normalizedAsset);
+    const foundByFileName = findImageByFileName(cleanPath);
     if (foundByFileName) {
       return foundByFileName;
     }
     
-    // Hiçbir eşleşme bulunamazsa, Vite'ın dinamik import'unu kullan
-    const assetPath = normalizedAsset.replace('/GuardFlex-urunler/', '/src/assets/GuardFlex-urunler/');
+    // Public klasöründeki dosyalar build'de root'a kopyalanır
+    // Bu yüzden direkt /GuardFlex-urunler/ path'ini kullanabiliriz
+    // Hem development hem production'da aynı path çalışır
     
-    try {
-      // Development'ta direkt path kullan
-      if (import.meta.env.DEV) {
-        return assetPath;
-      }
-      
-      // Production'da Vite'ın import.meta.url ile asset'i yükle
-      const url = new URL(assetPath, import.meta.url);
-      return url.href;
-    } catch (e) {
-      // Son fallback: base URL ile birleştir
-      const baseUrl = import.meta.env.BASE_URL || '/';
-      return baseUrl + 'assets' + normalizedAsset;
+    // Önce import.meta.glob mapping'ini kontrol et (build time'da hash'lenmiş asset'ler için)
+    if (imagePathMap[cleanPath] || imagePathMap[normalizedAsset]) {
+      return imagePathMap[cleanPath] || imagePathMap[normalizedAsset];
     }
+    
+    // Public klasöründeki dosyalar için direkt path kullan
+    // Public klasörü build'de root'a kopyalanır, bu yüzden path aynı kalır
+    return cleanPath;
   }
 
   // figma:asset/ formatı için
