@@ -140,7 +140,7 @@ export function ProductsPage() {
             </div>
           )}
 
-          {/* Error State */}
+          {/* Error State (göster ama grid'i bloklama) */}
           {error && !loading && (
             <div className="text-center py-12">
               <p className="text-red-400">{error}</p>
@@ -148,7 +148,7 @@ export function ProductsPage() {
           )}
 
           {/* Products Grid */}
-          {!loading && !error && (
+          {!loading && (
             <>
               {filteredProducts.length === 0 ? (
                 <div className="text-center py-12">
@@ -170,6 +170,8 @@ export function ProductsPage() {
                           loading="lazy"
                           decoding="async"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          width={800}
+                          height={800}
                           style={{ 
                             contentVisibility: 'auto',
                           }}

@@ -40,6 +40,8 @@ export function ImageWithFallback(props) {
       loading={loading}
       decoding={decoding}
       sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+      width={rest.width || 800}
+      height={rest.height || 800}
       {...rest} 
       onError={handleError} 
     />

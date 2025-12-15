@@ -87,6 +87,14 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    // Lokal geliştirmede backend'e proxy: http://localhost:3001
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });
 

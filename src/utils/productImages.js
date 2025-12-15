@@ -45,6 +45,19 @@ const normalizePath = (path) => {
 };
 
 /**
+ * URL içinde güvenli olması için path'i encode et
+ * Özellikle Türkçe karakterler ve boşluklar mobil tarayıcılarda 404'a sebep olabiliyor.
+ */
+const encodePath = (path) => {
+  try {
+    // encodeURI boşlukları ve unicode karakterleri güvenli hale getirir
+    return encodeURI(path);
+  } catch (e) {
+    return path;
+  }
+};
+
+/**
  * Path'i dosya adına göre bul
  */
 const findImageByFileName = (imagePath) => {
@@ -122,7 +135,8 @@ export const getProductImage = (imageAsset) => {
     const baseUrl = import.meta.env.BASE_URL || '';
     const finalPath = baseUrl && baseUrl !== '/' ? baseUrl.replace(/\/$/, '') + cleanPath : cleanPath;
     
-    return finalPath;
+    // Türkçe karakter ve boşluklar için encode et
+    return encodePath(finalPath);
   }
 
   // figma:asset/ formatı için
@@ -156,7 +170,7 @@ export const getProductImage = (imageAsset) => {
     }
   }
 
-  // Fallback: direkt path'i döndür
-  return normalizedAsset;
+  // Fallback: direkt path'i döndür (encode ederek)
+  return encodePath(normalizedAsset);
 };
 
