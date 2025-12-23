@@ -165,14 +165,14 @@ export function ProductsPage() {
                       className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
                     >
                       <div className="aspect-square overflow-hidden bg-gray-800 relative">
-                        {/* Sadece ilk görsel eager, diğerleri lazy - daha hızlı yükleme */}
+                        {/* Tüm görseller lazy loading - sadece görünür olduğunda yükle */}
                         <ImageWithFallback
                           src={getProductImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                          loading={index === 0 ? "eager" : "lazy"}
-                          decoding={index === 0 ? "sync" : "async"}
-                          fetchpriority={index === 0 ? "high" : "low"}
+                          loading="lazy"
+                          decoding="async"
+                          fetchpriority="low"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           width={400}
                           height={400}

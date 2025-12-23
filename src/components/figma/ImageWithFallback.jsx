@@ -45,7 +45,7 @@ export function ImageWithFallback(props) {
         })
       },
       {
-        rootMargin: '200px', // 200px önceden yükle (daha agresif preloading)
+        rootMargin: '50px', // Sadece görünür alana yaklaştığında yükle (bandwidth tasarrufu)
         threshold: 0.01,
       }
     )
@@ -55,7 +55,7 @@ export function ImageWithFallback(props) {
     return () => {
       observer.disconnect()
     }
-  }, [loading, isInView])
+  }, [loading, isInView, src])
 
   const handleError = () => {
     if (import.meta.env.DEV) {
