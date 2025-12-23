@@ -6,10 +6,17 @@ const getApiBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
+  
+  // Check if we're in production (multiple checks for reliability)
+  const isProduction = import.meta.env.PROD || 
+                       import.meta.env.MODE === 'production' ||
+                       (typeof window !== 'undefined' && !window.location.hostname.includes('localhost'));
+  
   // In production (on Vercel), use relative path
-  if (import.meta.env.PROD) {
+  if (isProduction) {
     return '/api';
   }
+  
   // In development, use localhost
   return 'http://localhost:3001/api';
 };

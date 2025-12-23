@@ -165,20 +165,17 @@ export function ProductsPage() {
                       className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
                     >
                       <div className="aspect-square overflow-hidden bg-gray-800 relative">
-                        {/* İlk 6 ürün için eager loading, diğerleri için lazy */}
+                        {/* İlk 3 ürün için eager loading ve high priority, diğerleri için lazy */}
                         <ImageWithFallback
                           src={getProductImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                          loading={index < 6 ? "eager" : "lazy"}
-                          decoding={index < 6 ? "sync" : "async"}
-                          fetchpriority={index < 6 ? "high" : "auto"}
+                          loading={index < 3 ? "eager" : "lazy"}
+                          decoding={index < 3 ? "sync" : "async"}
+                          fetchpriority={index < 3 ? "high" : "auto"}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          width={800}
-                          height={800}
-                          style={{ 
-                            contentVisibility: 'auto',
-                          }}
+                          width={600}
+                          height={600}
                         />
                       </div>
                       <div className="p-6">
