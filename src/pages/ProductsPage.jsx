@@ -22,24 +22,33 @@ export function ProductsPage() {
     const loadProducts = async () => {
       try {
         setLoading(true);
-        const data = await api.getProducts();
+        setError(null);
+        
+        // API çağrısı için timeout ekle (5 saniye)
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('API timeout')), 5000)
+        );
+        
+        const apiPromise = api.getProducts();
+        const data = await Promise.race([apiPromise, timeoutPromise]);
+        
         // Eğer API boş dönerse statik veriye düş
         if (Array.isArray(data) && data.length > 0) {
           setProducts(data);
-          setError(null);
         } else {
           // API boş döndü, statik veriyi kullan
           if (import.meta.env.DEV) {
             console.warn('ProductsPage: API returned empty array, using static data');
           }
           setProducts(staticProducts);
-          setError(null);
         }
       } catch (err) {
-        console.error('ProductsPage: Error loading products from API:', err);
-        setError('Produkte konnten nicht geladen werden.');
-        // Fallback to static data
+        // Hata durumunda sessizce statik veriye düş (kullanıcıya hata gösterme)
+        if (import.meta.env.DEV) {
+          console.warn('ProductsPage: Error loading products from API, using static data:', err);
+        }
         setProducts(staticProducts);
+        setError(null); // Hata mesajı gösterme
       } finally {
         setLoading(false);
       }
@@ -140,13 +149,6 @@ export function ProductsPage() {
             </div>
           )}
 
-          {/* Error State (göster ama grid'i bloklama) */}
-          {error && !loading && (
-            <div className="text-center py-12">
-              <p className="text-red-400">{error}</p>
-            </div>
-          )}
-
           {/* Products Grid */}
           {!loading && (
             <>
@@ -156,19 +158,21 @@ export function ProductsPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map((product, index) => (
                     <div
                       key={product._id || product.id}
                       onClick={() => setSelectedProduct(product)}
                       className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
                     >
-                      <div className="aspect-square overflow-hidden bg-gray-800">
+                      <div className="aspect-square overflow-hidden bg-gray-800 relative">
+                        {/* İlk 6 ürün için eager loading, diğerleri için lazy */}
                         <ImageWithFallback
                           src={getProductImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                          loading="lazy"
-                          decoding="async"
+                          loading={index < 6 ? "eager" : "lazy"}
+                          decoding={index < 6 ? "sync" : "async"}
+                          fetchpriority={index < 6 ? "high" : "auto"}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           width={800}
                           height={800}
