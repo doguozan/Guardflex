@@ -2,5 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://guardflex.ch/sitemap.xml
+Sitemap: https://www.guardflex.ch/sitemap.xml
 

@@ -6,50 +6,50 @@ const SEO_CONFIG = {
     title: 'GuardFlex - Fliegengitter, Sonnenschutz & Plissee Lösungen | Schweiz',
     description: 'Massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen aus der Schweiz. 100% Qualität garantiert. 2 Jahre Produkt- & Servicegarantie. Kostenloses Angebot!',
     keywords: 'Fliegengitter, Sonnenschutz, Plissee, Fensterschutz, Insektenschutz, Schweiz, GuardFlex, Honeycomb, Rollos, Jalousien',
-    ogImage: 'https://guardflex.ch/og-image.png',
-    canonical: 'https://guardflex.ch/'
+    ogImage: 'https://www.guardflex.ch/og-image.png',
+    canonical: 'https://www.guardflex.ch/'
   },
   '/products': {
     title: 'Produkte - Fliegengitter & Sonnenschutz | GuardFlex',
     description: 'Entdecken Sie unsere vielfältigen Produkte: Fliegengitter, Sonnenschutz, Plissee, Honeycomb und mehr. Massgeschneiderte Lösungen für jedes Fenster.',
     keywords: 'Fliegengitter Produkte, Sonnenschutz Produkte, Plissee, Honeycomb, Rollos, Fensterschutz Produkte',
-    ogImage: 'https://guardflex.ch/og-image-products.jpg',
-    canonical: 'https://guardflex.ch/products'
+    ogImage: 'https://www.guardflex.ch/og-image-products.jpg',
+    canonical: 'https://www.guardflex.ch/products'
   },
   '/services': {
     title: 'Dienstleistungen - Montage & Beratung | GuardFlex',
     description: 'Professionelle Montage, Beratung und Service für Fliegengitter und Sonnenschutz. Kostenlose Beratung vor Ort in der ganzen Schweiz.',
     keywords: 'Fliegengitter Montage, Sonnenschutz Service, Beratung, Installation, Schweiz',
-    ogImage: 'https://guardflex.ch/og-image-services.jpg',
-    canonical: 'https://guardflex.ch/services'
+    ogImage: 'https://www.guardflex.ch/og-image-services.jpg',
+    canonical: 'https://www.guardflex.ch/services'
   },
   '/benefits': {
     title: 'Vorteile - Warum GuardFlex? | Qualität & Garantie',
     description: '100% Qualität garantiert. 2 Jahre Produkt- & Servicegarantie. Preisgarantie. Erfahren Sie, warum GuardFlex die beste Wahl ist.',
     keywords: 'Fliegengitter Vorteile, Qualität, Garantie, Service, Preisgarantie',
-    ogImage: 'https://guardflex.ch/og-image-benefits.jpg',
-    canonical: 'https://guardflex.ch/benefits'
+    ogImage: 'https://www.guardflex.ch/og-image-benefits.jpg',
+    canonical: 'https://www.guardflex.ch/benefits'
   },
   '/gallery': {
     title: 'Galerie - Unsere Projekte | GuardFlex',
     description: 'Sehen Sie unsere erfolgreich abgeschlossenen Projekte. Fliegengitter, Sonnenschutz und Plissee Installationen in der ganzen Schweiz.',
     keywords: 'Fliegengitter Projekte, Referenzen, Galerie, Installationen, Beispiele',
-    ogImage: 'https://guardflex.ch/og-image-gallery.jpg',
-    canonical: 'https://guardflex.ch/gallery'
+    ogImage: 'https://www.guardflex.ch/og-image-gallery.jpg',
+    canonical: 'https://www.guardflex.ch/gallery'
   },
   '/history': {
     title: 'Über Uns - Unsere Geschichte | GuardFlex',
     description: 'Erfahren Sie mehr über GuardFlex, unsere Geschichte, unsere Werte und unser Engagement für Qualität und Kundenzufriedenheit.',
     keywords: 'Über GuardFlex, Geschichte, Unternehmen, Werte, Qualität',
-    ogImage: 'https://guardflex.ch/og-image-history.jpg',
-    canonical: 'https://guardflex.ch/history'
+    ogImage: 'https://www.guardflex.ch/og-image-history.jpg',
+    canonical: 'https://www.guardflex.ch/history'
   },
   '/contact': {
     title: 'Kontakt - Kostenloses Angebot | GuardFlex',
     description: 'Kontaktieren Sie uns für ein kostenloses Angebot. Kostenlose Beratung vor Ort. WhatsApp, E-Mail oder Telefon - wir sind für Sie da!',
     keywords: 'Kontakt, Angebot, Beratung, WhatsApp, E-Mail, Telefon',
-    ogImage: 'https://guardflex.ch/og-image-contact.jpg',
-    canonical: 'https://guardflex.ch/contact'
+    ogImage: 'https://www.guardflex.ch/og-image-contact.jpg',
+    canonical: 'https://www.guardflex.ch/contact'
   }
 };
 
@@ -131,8 +131,8 @@ export function SEO() {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'GuardFlex',
-      url: 'https://guardflex.ch',
-      logo: 'https://guardflex.ch/logo.png',
+      url: 'https://www.guardflex.ch',
+      logo: 'https://www.guardflex.ch/logo.png',
       description: seoData.description,
       address: {
         '@type': 'PostalAddress',
@@ -153,7 +153,7 @@ export function SEO() {
       jsonLd['@type'] = 'WebSite';
       jsonLd.potentialAction = {
         '@type': 'SearchAction',
-        target: 'https://guardflex.ch/search?q={search_term_string}',
+        target: 'https://www.guardflex.ch/search?q={search_term_string}',
         'query-input': 'required name=search_term_string'
       };
     } else if (location.pathname === '/products') {

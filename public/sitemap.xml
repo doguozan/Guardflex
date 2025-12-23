@@ -6,7 +6,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://guardflex.ch/</loc>
+    <loc>https://www.guardflex.ch/</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
   
   <!-- Products -->
   <url>
-    <loc>https://guardflex.ch/products</loc>
+    <loc>https://www.guardflex.ch/products</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
   
   <!-- Services -->
   <url>
-    <loc>https://guardflex.ch/services</loc>
+    <loc>https://www.guardflex.ch/services</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -30,7 +30,7 @@
   
   <!-- Benefits -->
   <url>
-    <loc>https://guardflex.ch/benefits</loc>
+    <loc>https://www.guardflex.ch/benefits</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -38,7 +38,7 @@
   
   <!-- Gallery -->
   <url>
-    <loc>https://guardflex.ch/gallery</loc>
+    <loc>https://www.guardflex.ch/gallery</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -46,7 +46,7 @@
   
   <!-- History -->
   <url>
-    <loc>https://guardflex.ch/history</loc>
+    <loc>https://www.guardflex.ch/history</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -54,7 +54,7 @@
   
   <!-- Contact -->
   <url>
-    <loc>https://guardflex.ch/contact</loc>
+    <loc>https://www.guardflex.ch/contact</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
