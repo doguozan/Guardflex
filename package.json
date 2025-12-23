@@ -206,7 +206,8 @@
     "server": "node server.js",
     "server:dev": "nodemon server.js",
     "seed": "node server/scripts/seedDatabase.js",
-    "db:check": "node server/scripts/checkConnection.js"
+    "db:check": "node server/scripts/checkConnection.js",
+    "sitemap:update": "node scripts/update-sitemap.js"
   },
   "repository": {
     "type": "git",
