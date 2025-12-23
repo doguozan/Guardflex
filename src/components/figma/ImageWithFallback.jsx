@@ -31,7 +31,7 @@ export function ImageWithFallback(props) {
     }
   }, [src, loading, fetchpriority])
 
-  // Intersection Observer ile görsel görünür olduğunda yükle (lazy loading için)
+      // Intersection Observer ile görsel görünür olduğunda yükle (lazy loading için)
   useEffect(() => {
     if (loading === 'eager' || isInView || !imgRef.current) return
 
@@ -45,7 +45,7 @@ export function ImageWithFallback(props) {
         })
       },
       {
-        rootMargin: '100px', // 100px önceden yükle (mobil için daha erken)
+        rootMargin: '200px', // 200px önceden yükle (daha agresif preloading)
         threshold: 0.01,
       }
     )
@@ -106,8 +106,8 @@ export function ImageWithFallback(props) {
           decoding={decoding}
           fetchpriority={fetchpriority}
           sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
-          width={rest.width || 800}
-          height={rest.height || 800}
+          width={rest.width || 400}
+          height={rest.height || 400}
           {...rest} 
           onError={handleError}
           onLoad={handleLoad}
