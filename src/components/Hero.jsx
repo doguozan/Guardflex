@@ -4,7 +4,7 @@ import heroImage from '../assets/hero-section.png';
 export function Hero() {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Hero görselini preload et (kritik görsel)
+  // Hero görselini preload et (kritik görsel) - Mobilde hemen yükle
   useEffect(() => {
     // Preload link ekle
     const link = document.createElement('link');
@@ -14,12 +14,31 @@ export function Hero() {
     link.setAttribute('fetchpriority', 'high');
     document.head.appendChild(link);
 
-    // Görseli önceden yükle
+    // Görseli önceden yükle - Mobilde hemen
     const img = new Image();
     img.src = heroImage;
     img.onload = () => {
       setImageLoaded(true);
     };
+    img.onerror = () => {
+      // Hata olsa bile görseli göster
+      setImageLoaded(true);
+    };
+    
+    // Mobilde timeout ile de garanti altına al
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    if (isMobile) {
+      const timeoutId = setTimeout(() => {
+        setImageLoaded(true);
+      }, 200);
+      
+      return () => {
+        clearTimeout(timeoutId);
+        if (document.head.contains(link)) {
+          document.head.removeChild(link);
+        }
+      };
+    }
 
     return () => {
       if (document.head.contains(link)) {

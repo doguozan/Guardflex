@@ -6,20 +6,28 @@ const ERROR_IMG_SRC =
 export function ImageWithFallback(props) {
   const [didError, setDidError] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isInView, setIsInView] = useState(props.loading === 'eager')
+  // Mobilde başlangıçta true yap - hemen yükle
+  const isMobileInitial = typeof window !== 'undefined' && window.innerWidth < 768
+  const [isInView, setIsInView] = useState(props.loading === 'eager' || isMobileInitial)
   const imgRef = useRef(null)
 
   const { src, alt, style, className, loading = 'lazy', decoding = 'async', sizes, fetchpriority = 'auto', ...rest } = props
 
-  // Preload kritik görseller için (eager loading)
+  // Preload TÜM görseller için (özellikle mobilde)
   useEffect(() => {
-    if (loading === 'eager' && src && typeof document !== 'undefined') {
+    if (!src || typeof document === 'undefined') return
+    
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    
+    // Mobilde TÜM görselleri preload et, desktop'ta eager olanları
+    if (loading === 'eager' || isMobile) {
       const link = document.createElement('link')
       link.rel = 'preload'
       link.as = 'image'
       link.href = src
-      if (fetchpriority === 'high') {
-        link.setAttribute('fetchpriority', 'high')
+      // Mobilde veya high priority olanlarda fetchpriority ekle
+      if (fetchpriority === 'high' || isMobile) {
+        link.setAttribute('fetchpriority', isMobile ? 'high' : fetchpriority)
       }
       document.head.appendChild(link)
       
@@ -43,8 +51,8 @@ export function ImageWithFallback(props) {
       if (!imgRef.current) return false
       const rect = imgRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      // Mobilde daha geniş alan kontrol et (ekranın 2 katı kadar)
-      const margin = isMobile ? viewportHeight * 2 : viewportHeight
+      // Mobilde çok daha geniş alan kontrol et (ekranın 5 katı kadar - tüm görselleri kapsar)
+      const margin = isMobile ? viewportHeight * 5 : viewportHeight * 2
       return (
         rect.top < viewportHeight + margin &&
         rect.bottom > -margin &&
@@ -59,8 +67,15 @@ export function ImageWithFallback(props) {
       return
     }
 
-    // Mobil için çok daha geniş rootMargin (ekranın 3 katı kadar)
-    const rootMargin = isMobile ? '300%' : '200px'
+    // MOBİLDE: Tüm görselleri HEMEN yükle - lazy loading tamamen devre dışı
+    if (isMobile) {
+      // Mobilde tüm görselleri hemen yükle (lazy loading yok)
+      setIsInView(true)
+      return
+    }
+
+    // Desktop için agresif lazy loading
+    const rootMargin = '1000px' // Desktop'ta çok erken yükle
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -72,7 +87,7 @@ export function ImageWithFallback(props) {
         })
       },
       {
-        rootMargin, // Mobilde çok daha erken yükle
+        rootMargin,
         threshold: 0.01,
       }
     )
@@ -82,7 +97,7 @@ export function ImageWithFallback(props) {
       observer.observe(currentRef)
     }
 
-    // Scroll ve resize event'lerinde de kontrol et (mobil için önemli)
+    // Scroll ve resize event'lerinde de kontrol et
     const handleScroll = () => {
       if (checkVisibility() && !isInView) {
         setIsInView(true)
@@ -90,20 +105,20 @@ export function ImageWithFallback(props) {
       }
     }
 
-    // Mobilde daha sık kontrol et
-    const checkInterval = isMobile ? setInterval(() => {
+    // Desktop'ta da sık kontrol et
+    const checkInterval = setInterval(() => {
       if (checkVisibility() && !isInView) {
         setIsInView(true)
         observer.disconnect()
         clearInterval(checkInterval)
       }
-    }, 100) : null
+    }, 50) // Daha sık kontrol (50ms)
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleScroll, { passive: true })
 
     return () => {
-      if (checkInterval) clearInterval(checkInterval)
+      clearInterval(checkInterval)
       observer.disconnect()
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleScroll)
@@ -146,18 +161,18 @@ export function ImageWithFallback(props) {
       {!isLoaded && (
         <div className="absolute inset-0 bg-gray-800 animate-pulse" />
       )}
-      {/* Görsel */}
+      {/* Görsel - Mobilde her zaman render et, desktop'ta lazy loading */}
       {(isInView || loading === 'eager') && (
         <img 
           src={src} 
           alt={alt} 
-          className={`${className ?? ''} transition-opacity duration-300 ${
+          className={`${className ?? ''} transition-opacity duration-200 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={style} 
-          loading={loading}
+          loading={isMobileInitial || loading === 'eager' ? 'eager' : 'lazy'}
           decoding={decoding}
-          fetchpriority={fetchpriority}
+          fetchpriority={isMobileInitial || fetchpriority === 'high' ? 'high' : fetchpriority}
           sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
           width={rest.width || 400}
           height={rest.height || 400}

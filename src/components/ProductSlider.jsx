@@ -16,28 +16,25 @@ export function ProductSlider() {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   
-  // Load products from API
+  // Load products - Önce statik veriyi göster, sonra API'den güncelle
   useEffect(() => {
+    // Hemen statik veriyi göster (görseller hemen yüklensin)
+    setProducts(staticProducts.slice(0, 6));
+    setLoading(false);
+    
+    // Arka planda API'den güncelle
     const loadProducts = async () => {
       try {
-        setLoading(true);
         const data = await api.getProducts();
-        // API boş dönerse veya hata olursa statik veriye düş
+        // API başarılı dönerse güncelle
         if (Array.isArray(data) && data.length > 0) {
           setProducts(data.slice(0, 6));
-        } else {
-          // API boş döndü, statik veriyi kullan
-          if (import.meta.env.DEV) {
-            console.warn('ProductSlider: API returned empty array, using static data');
-          }
-          setProducts(staticProducts.slice(0, 6));
         }
       } catch (err) {
-        console.error('ProductSlider: Error loading products from API:', err);
-        // Fallback to static data
-        setProducts(staticProducts.slice(0, 6));
-      } finally {
-        setLoading(false);
+        // Hata olursa sessizce statik veriyi kullan (zaten set edilmiş)
+        if (import.meta.env.DEV) {
+          console.warn('ProductSlider: API error, using static data:', err);
+        }
       }
     };
 
@@ -219,8 +216,8 @@ export function ProductSlider() {
                         src={getProductImage(product.image)}
                         alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
-                        loading={index < 3 ? "eager" : "lazy"}
-                        fetchpriority={index < 3 ? "high" : "auto"}
+                        loading="eager"
+                        fetchpriority="high"
                         decoding="async"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         width={400}

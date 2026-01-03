@@ -197,8 +197,8 @@ export function Gallery() {
                   src={item.url}
                   alt={`GuardFlex Projekt - ${item.title} - Fliegengitter oder Sonnenschutz Installation`}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  loading={index < 6 ? "eager" : "lazy"}
-                  fetchpriority={index < 6 ? "high" : "auto"}
+                  loading="eager"
+                  fetchpriority="high"
                   decoding="async"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
