@@ -219,8 +219,8 @@ export function ProductSlider() {
                         src={getProductImage(product.image)}
                         alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
-                        loading="lazy"
-                        fetchpriority="low"
+                        loading={index < 3 ? "eager" : "lazy"}
+                        fetchpriority={index < 3 ? "high" : "auto"}
                         decoding="async"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         width={400}

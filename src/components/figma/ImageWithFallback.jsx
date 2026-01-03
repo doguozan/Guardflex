@@ -35,6 +35,33 @@ export function ImageWithFallback(props) {
   useEffect(() => {
     if (loading === 'eager' || isInView || !imgRef.current) return
 
+    // Mobil cihaz kontrolü
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    
+    // Mobilde görselin görünür olup olmadığını manuel kontrol et
+    const checkVisibility = () => {
+      if (!imgRef.current) return false
+      const rect = imgRef.current.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      // Mobilde daha geniş alan kontrol et (ekranın 2 katı kadar)
+      const margin = isMobile ? viewportHeight * 2 : viewportHeight
+      return (
+        rect.top < viewportHeight + margin &&
+        rect.bottom > -margin &&
+        rect.left < window.innerWidth + margin &&
+        rect.right > -margin
+      )
+    }
+
+    // İlk yüklemede görsel zaten görünürse hemen yükle
+    if (checkVisibility()) {
+      setIsInView(true)
+      return
+    }
+
+    // Mobil için çok daha geniş rootMargin (ekranın 3 katı kadar)
+    const rootMargin = isMobile ? '300%' : '200px'
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -45,15 +72,41 @@ export function ImageWithFallback(props) {
         })
       },
       {
-        rootMargin: '50px', // Sadece görünür alana yaklaştığında yükle (bandwidth tasarrufu)
+        rootMargin, // Mobilde çok daha erken yükle
         threshold: 0.01,
       }
     )
 
-    observer.observe(imgRef.current)
+    const currentRef = imgRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
+    }
+
+    // Scroll ve resize event'lerinde de kontrol et (mobil için önemli)
+    const handleScroll = () => {
+      if (checkVisibility() && !isInView) {
+        setIsInView(true)
+        observer.disconnect()
+      }
+    }
+
+    // Mobilde daha sık kontrol et
+    const checkInterval = isMobile ? setInterval(() => {
+      if (checkVisibility() && !isInView) {
+        setIsInView(true)
+        observer.disconnect()
+        clearInterval(checkInterval)
+      }
+    }, 100) : null
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
 
     return () => {
+      if (checkInterval) clearInterval(checkInterval)
       observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
   }, [loading, isInView, src])
 

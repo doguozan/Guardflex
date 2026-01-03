@@ -45,7 +45,7 @@ export function Hero() {
             }`}
             loading="eager"
             fetchpriority="high"
-            decoding="sync"
+            decoding="async"
             sizes="100vw"
             onLoad={() => setImageLoaded(true)}
             style={{ 
