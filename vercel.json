@@ -13,7 +13,7 @@
           "value": "guardflex.ch"
         }
       ],
-      "destination": "https://www.guardflex.ch/:path*",
+      "destination": "https://www.guardflex.ch/$1",
       "permanent": true
     }
   ],
