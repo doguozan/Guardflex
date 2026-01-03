@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { X, Filter, ChevronDown, ChevronUp } from "lucide-react";
 import { getProductImage } from "../utils/productImages";
@@ -17,40 +17,25 @@ export function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Load products from API
+  // Load products - Önce statik veriyi göster, sonra API'den güncelle
   useEffect(() => {
+    // Hemen statik veriyi göster (görseller hemen yüklensin)
+    setProducts(staticProducts);
+    setLoading(false);
+    
+    // Arka planda API'den güncelle
     const loadProducts = async () => {
       try {
-        setLoading(true);
-        setError(null);
-        
-        // API çağrısı için timeout ekle (5 saniye)
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('API timeout')), 5000)
-        );
-        
-        const apiPromise = api.getProducts();
-        const data = await Promise.race([apiPromise, timeoutPromise]);
-        
-        // Eğer API boş dönerse statik veriye düş
+        const data = await api.getProducts();
+        // API başarılı dönerse güncelle
         if (Array.isArray(data) && data.length > 0) {
           setProducts(data);
-        } else {
-          // API boş döndü, statik veriyi kullan
-          if (import.meta.env.DEV) {
-            console.warn('ProductsPage: API returned empty array, using static data');
-          }
-          setProducts(staticProducts);
         }
       } catch (err) {
-        // Hata durumunda sessizce statik veriye düş (kullanıcıya hata gösterme)
+        // Hata olursa sessizce statik veriyi kullan (zaten set edilmiş)
         if (import.meta.env.DEV) {
-          console.warn('ProductsPage: Error loading products from API, using static data:', err);
+          console.warn('ProductsPage: API error, using static data:', err);
         }
-        setProducts(staticProducts);
-        setError(null); // Hata mesajı gösterme
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -64,10 +49,26 @@ export function ProductsPage() {
     }
   }, [location.state]);
 
-  // Filtrelenmiş ürünleri getir
-  const filteredProducts = selectedCategory === "Alle" 
-    ? products 
-    : products.filter(product => product.category === selectedCategory);
+  // Filtrelenmiş ürünleri getir - Memoize et
+  const filteredProducts = useMemo(() => {
+    return selectedCategory === "Alle" 
+      ? products 
+      : products.filter(product => product.category === selectedCategory);
+  }, [products, selectedCategory]);
+
+  // Görsel URL'lerini memoize et (her render'da getProductImage çağrılmasın)
+  // Tüm ürünler için cache oluştur (modal'da farklı kategori ürünü açılabilir)
+  const productImageCache = useMemo(() => {
+    const cache = {};
+    // Tüm ürünler için cache oluştur (sadece filteredProducts değil)
+    products.forEach(product => {
+      const productId = product._id || product.id;
+      if (productId && !cache[productId]) {
+        cache[productId] = getProductImage(product.image);
+      }
+    });
+    return cache;
+  }, [products]);
 
   return (
     <div className="pt-20 min-h-screen bg-black">
@@ -167,7 +168,7 @@ export function ProductsPage() {
                       <div className="aspect-square overflow-hidden bg-gray-800 relative">
                         {/* Tüm görseller lazy loading - sadece görünür olduğunda yükle */}
                         <ImageWithFallback
-                          src={getProductImage(product.image)}
+                          src={productImageCache[product._id || product.id] || getProductImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                           loading="eager"
@@ -228,11 +229,12 @@ export function ProductsPage() {
                 {/* Product Image */}
                 <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square">
                   <ImageWithFallback
-                    src={getProductImage(selectedProduct.image)}
+                    src={productImageCache[selectedProduct._id || selectedProduct.id] || getProductImage(selectedProduct.image)}
                     alt={selectedProduct.name}
                     className="w-full h-full object-contain"
                     loading="eager"
                     decoding="async"
+                    fetchpriority="high"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>
