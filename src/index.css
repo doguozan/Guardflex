@@ -2367,3 +2367,20 @@ p {
     transform: none;
   }
 }
+
+@media (max-width: 767px) {
+  #hero .hero-media {
+    height: 50vh;
+    max-height: 50vh;
+  }
+
+  #hero .hero-media-img {
+    height: 50vh;
+    max-height: 50vh;
+  }
+
+  #hero .hero-headline {
+    font-size: 6.5vw !important;
+    line-height: 1.55 !important;
+  }
+}

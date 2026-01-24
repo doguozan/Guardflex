@@ -71,7 +71,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation - Almanca Alfabetik Sıralama */}
-          <nav className="hidden md:flex items-center gap-4">
+          <nav className="hidden md:flex items-center gap-4 text-[14px]">
             {/* Diğer Sayfalar - Alfabetik Sıraya Göre */}
             <Link
               to="/services"
@@ -128,7 +128,7 @@ export function Header() {
                   <div className="flex flex-col">
                     <Link
                       to="/products"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-emerald-400 transition-colors"
+                      className="block px-4 py-2 text-[14px] text-gray-300 hover:bg-gray-800 hover:text-emerald-400 transition-colors"
                       onClick={() => setIsProductsSubmenuOpen(false)}
                     >
                       Alle Produkte
@@ -137,7 +137,7 @@ export function Header() {
                       <button
                         key={category}
                         onClick={() => handleCategoryClick(category)}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-emerald-400 transition-colors"
+                        className="w-full text-left px-4 py-2 text-[14px] text-gray-300 hover:bg-gray-800 hover:text-emerald-400 transition-colors"
                       >
                         {category}
                       </button>
@@ -160,7 +160,7 @@ export function Header() {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-800">
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-4 text-[14px]">
               {/* Mobile Produkte Dropdown */}
               <div>
                 <button
@@ -200,7 +200,7 @@ export function Header() {
                         setIsProductsSubmenuOpen(false);
                         setIsMobileMenuOpen(false);
                       }}
-                      className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                      className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-[14px] py-2"
                       type="button"
                     >
                       Alle Produkte
@@ -218,7 +218,7 @@ export function Header() {
                           e.stopPropagation();
                           handleCategoryClick(category);
                         }}
-                        className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-sm py-2"
+                        className="block w-full text-left text-gray-400 hover:text-emerald-400 active:text-emerald-400 transition-colors text-[14px] py-2"
                         type="button"
                       >
                         {category}

@@ -52,7 +52,7 @@ export function Hero() {
     <>
       <section id="hero" className="relative bg-black">
         {/* Background Image with Overlay */}
-        <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh]">
+        <div className="hero-media relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh]">
           {/* Placeholder */}
           {!imageLoaded && (
             <div className="absolute inset-0 bg-gray-900 animate-pulse" />
@@ -60,7 +60,7 @@ export function Hero() {
           <img
             src={heroImage}
             alt="GuardFlex Fliegengitter und Sonnenschutz - Qualität aus der Schweiz"
-            className={`w-full h-full object-cover opacity-70 transition-opacity duration-300 ${
+            className={`hero-media-img w-full h-full object-cover opacity-70 transition-opacity duration-300 ${
               imageLoaded ? 'opacity-70' : 'opacity-0'
             }`}
             loading="eager"
@@ -74,13 +74,30 @@ export function Hero() {
             }}
           />
           <div className="absolute inset-0 bg-black/40"></div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center gap-6">
-            <p className="max-w-4xl text-white font-semibold tracking-wide drop-shadow text-[1rem] sm:text-[2rem]">
+          <div className="absolute inset-0 flex flex-col items-center text-center justify-center px-6 gap-6">
+            <p
+              className="hero-headline text-white tracking-wide drop-shadow text-[1rem] sm:text-[2rem] max-w-[90vw] sm:max-w-none"
+              style={{
+                fontSize: '3.5vw',
+                lineHeight: '1.25',
+                fontWeight: 700,
+                maxWidth: 'min(80vw, 850px)'
+              }}
+            >
               Massgefertigte Lösungen für Insektenschutz, Sonnenschutz und Sichtschutz
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-white font-semibold shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-600 hover:scale-105 active:scale-95"
+              className="rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-600 hover:scale-105 active:scale-95"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'max-content',
+                padding: '10px 40px',
+                fontSize: '18px',
+                fontWeight: 600
+              }}
             >
               Kontakt
             </Link>
