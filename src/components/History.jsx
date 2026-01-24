@@ -95,6 +95,30 @@ export function History() {
           </div>
         </div>
 
+        {/* GuardFlex Story */}
+        <div className="max-w-4xl mx-auto mt-16 bg-[#252525] border border-white/10 p-8 rounded-2xl">
+          <div className="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-4">
+            <span className="text-emerald-400 text-sm">Wer ist GuardFlex?</span>
+          </div>
+          <p className="text-gray-300 mb-4">
+            GuardFlex entstand nicht aus einem Businessplan, sondern aus Praxis.
+            Ein Vater-Sohn-Projekt mit handwerklichem Ursprung und dem Anspruch, Dinge sauber und langlebig zu lösen.
+          </p>
+          <p className="text-gray-300 mb-4">
+            Was mit ersten Eigenmontagen und individuellen Lösungen begann, entwickelte sich Schritt für Schritt zu GuardFlex.
+            Wir haben früh gemerkt, dass Standardlösungen oft nicht passen.
+            Fenster, Türen und Wohnsituationen sind unterschiedlich – genau dort setzen wir an.
+          </p>
+          <p className="text-gray-300 mb-4">
+            Unsere Stärke liegt in massgefertigten Insektenschutz- und Sonnenschutzlösungen, präzise montiert und auf den Kunden abgestimmt.
+            Kein System von der Stange, keine schnellen Kompromisse.
+          </p>
+          <p className="text-gray-300">
+            Heute steht GuardFlex für Qualität, saubere Arbeit und direkte Kommunikation.
+            Wir sind ein Familienunternehmen geblieben und genau das ist unser Vorteil: kurze Wege, Verantwortung und ein hoher Anspruch an jedes einzelne Produkt.
+          </p>
+        </div>
+
       </div>
     </section>
   );
