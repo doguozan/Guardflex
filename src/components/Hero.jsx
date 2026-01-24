@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import heroImage from '../assets/hero-section.png';
 
 export function Hero() {
@@ -67,12 +68,26 @@ export function Hero() {
             decoding="async"
             sizes="100vw"
             onLoad={() => setImageLoaded(true)}
-            style={{ 
+            style={{
               contentVisibility: 'auto',
               containIntrinsicSize: '100vw 60vh'
             }}
           />
           <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center gap-6">
+            <p
+              className="max-w-4xl text-white font-semibold tracking-wide drop-shadow"
+              style={{ fontSize: '3rem' }}
+            >
+              Massgefertigte Lösungen für Insektenschutz, Sonnenschutz und Sichtschutz
+            </p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-white font-semibold shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-600 hover:scale-105 active:scale-95"
+            >
+              Kontakt
+            </Link>
+          </div>
         </div>
       </section>
     </>
