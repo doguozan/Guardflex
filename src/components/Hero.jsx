@@ -75,7 +75,7 @@ export function Hero() {
           />
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center gap-6">
-            <p className="max-w-4xl text-white font-semibold tracking-wide drop-shadow text-[1rem] sm:text-[3rem]">
+            <p className="max-w-4xl text-white font-semibold tracking-wide drop-shadow text-[1rem] sm:text-[2rem]">
               Massgefertigte Lösungen für Insektenschutz, Sonnenschutz und Sichtschutz
             </p>
             <Link
