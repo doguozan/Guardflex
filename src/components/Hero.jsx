@@ -1,8 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import heroImage from '../assets/hero-section.png';
+import defaultHeroImage from '../assets/hero-section.png';
+import { useSiteContent } from '../context/SiteContentContext';
+import { DEFAULT_SITE } from '../data/siteContentDefaults';
 
 export function Hero() {
+  const { site } = useSiteContent();
+  const heroImage = useMemo(() => {
+    const u = site?.hero?.image?.trim?.();
+    return u || defaultHeroImage;
+  }, [site?.hero?.image]);
+
+  const headlineHtml =
+    site?.hero?.headline?.trim?.() ||
+    site?.hero?.title?.trim?.() ||
+    DEFAULT_SITE.hero.headline;
+
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // Hero görselini preload et (kritik görsel) - Mobilde hemen yükle
@@ -46,16 +59,16 @@ export function Hero() {
         document.head.removeChild(link);
       }
     };
-  }, []);
+  }, [heroImage]);
 
   return (
     <>
-      <section id="hero" className="relative bg-black">
+      <section id="hero" className="relative bg-white">
         {/* Background Image with Overlay */}
         <div className="hero-media relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh]">
           {/* Placeholder */}
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-900 animate-pulse" />
+            <div className="absolute inset-0 bg-gray-100 animate-pulse" />
           )}
           <img
             src={heroImage}
@@ -73,19 +86,19 @@ export function Hero() {
               containIntrinsicSize: '100vw 60vh'
             }}
           />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-white/30"></div>
           <div className="absolute inset-0 flex flex-col items-center text-center justify-center px-6 gap-6">
-            <p
-              className="hero-headline text-white tracking-wide drop-shadow text-[1rem] sm:text-[2rem] max-w-[90vw] sm:max-w-none"
+            <div
+              className="hero-headline tracking-wide drop-shadow text-[1rem] sm:text-[2rem] max-w-[90vw] sm:max-w-none"
               style={{
+                color: '#fff',
                 fontSize: '3.5vw',
                 lineHeight: '1.25',
                 fontWeight: 700,
                 maxWidth: 'min(80vw, 850px)'
               }}
-            >
-              Massgefertigte Lösungen für Insektenschutz, Sonnenschutz und Sichtschutz
-            </p>
+              dangerouslySetInnerHTML={{ __html: headlineHtml }}
+            />
             <Link
               to="/contact"
               className="rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-600 hover:scale-105 active:scale-95"

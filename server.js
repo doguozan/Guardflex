@@ -4,40 +4,85 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import connectDB from './server/config/database.js';
+import { productsRouter } from './server/routes/products.js';
+import { contactRouter } from './server/routes/contact.js';
+import { adminRouter } from './server/routes/admin.js';
+import { siteRouter } from './server/routes/site.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Connect to MongoDB
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 connectDB();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
+  : null;
 
-// Import routes
-import { productsRouter } from './server/routes/products.js';
-import { contactRouter } from './server/routes/contact.js';
-import { adminRouter } from './server/routes/admin.js';
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+app.use(
+  cors({
+    origin: corsOrigins && corsOrigins.length > 0 ? corsOrigins : true,
+    credentials: false,
+  })
+);
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Routes
-app.use('/api/products', productsRouter);
+app.use('/api/site', siteRouter);
+
+const contactSubmitLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 25,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again later.' },
+});
+
+const adminLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Try again later.' },
+});
+
+app.use('/api/contact', (req, res, next) => {
+  if (req.method === 'POST' && req.path === '/') {
+    return contactSubmitLimiter(req, res, next);
+  }
+  next();
+});
 app.use('/api/contact', contactRouter);
+
+app.use('/api/admin', (req, res, next) => {
+  if (req.method === 'POST' && req.path === '/login') {
+    return adminLoginLimiter(req, res, next);
+  }
+  next();
+});
 app.use('/api/admin', adminRouter);
 
-// Health check
+app.use('/api/products', productsRouter);
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 
 export default app;
-

@@ -71,13 +71,13 @@ export function ProductsPage() {
   }, [products]);
 
   return (
-    <div className="pt-20 min-h-screen bg-black">
+    <div className="pt-20 min-h-screen bg-white">
       {/* Header Section */}
-      <section className="bg-gradient-to-b from-gray-900 to-black py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-16 lg:py-24 border-b border-gray-200">
+        <div className="site-container">
           <div className="text-center">
-            <h1 className="text-white mb-4">Unsere Produkte</h1>
-            <p className="text-gray-300 text-xl max-w-3xl mx-auto">
+            <h1 className="text-gray-900 mb-4">Unsere Produkte</h1>
+            <p className="text-gray-600 text-xl max-w-3xl mx-auto">
               Entdecken Sie unsere hochwertigen Fliegengitter-,
               Sonnenschutz- und Plissee-Lösungen.
             </p>
@@ -86,18 +86,18 @@ export function ProductsPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="bg-black py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-16">
+        <div className="site-container">
           {/* Filter Section - Minimalize ve Sağa Yaslı */}
           <div className="mb-8 flex justify-end">
             <div className="relative">
               {/* Filter Header - Tıklanabilir */}
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg hover:border-emerald-500 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-emerald-500 transition-all"
               >
                 <Filter className="text-emerald-400" size={18} />
-                <span className="text-white text-sm">
+                <span className="text-gray-900 text-sm">
                   {selectedCategory !== "Alle" ? selectedCategory : "Filter"}
                 </span>
                 {isFilterOpen ? (
@@ -109,7 +109,7 @@ export function ProductsPage() {
 
               {/* Filter Content - Açılır/Kapanır - Dropdown */}
               {isFilterOpen && (
-                <div className="absolute right-0 top-full mt-2 bg-gray-900 border border-gray-800 rounded-lg p-4 shadow-xl z-10 min-w-[200px] animate-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg p-4 shadow-lg z-10 min-w-[200px] animate-in slide-in-from-top-2 duration-200">
                   <div className="flex flex-col gap-2">
                     {productCategories.map((category) => {
                       const categoryLabels = {
@@ -129,7 +129,7 @@ export function ProductsPage() {
                           className={`px-4 py-2 rounded-lg transition-all text-sm text-left ${
                             selectedCategory === category
                               ? "bg-emerald-500 text-white"
-                              : "text-gray-300 hover:bg-gray-800 hover:text-emerald-400"
+                              : "text-gray-700 hover:bg-gray-100 hover:text-emerald-500"
                           }`}
                         >
                           {categoryLabels[category] || category}
@@ -146,7 +146,7 @@ export function ProductsPage() {
           {loading && (
             <div className="text-center py-12">
               <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
+              <p className="text-gray-600 mt-4">Produkte werden geladen...</p>
             </div>
           )}
 
@@ -155,7 +155,7 @@ export function ProductsPage() {
             <>
               {filteredProducts.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-400">Keine Produkte gefunden.</p>
+                  <p className="text-gray-600">Keine Produkte gefunden.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -163,9 +163,9 @@ export function ProductsPage() {
                     <div
                       key={product._id || product.id}
                       onClick={() => setSelectedProduct(product)}
-                      className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
+                      className="bg-white border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 transition-all group"
                     >
-                      <div className="aspect-square overflow-hidden bg-gray-800 relative">
+                      <div className="aspect-square overflow-hidden bg-gray-100 relative">
                         {/* Tüm görseller lazy loading - sadece görünür olduğunda yükle */}
                         <ImageWithFallback
                           src={productImageCache[product._id || product.id] || getProductImage(product.image)}
@@ -179,17 +179,34 @@ export function ProductsPage() {
                           height={400}
                         />
                       </div>
-                      <div className="p-6">
-                        <div className="text-emerald-400 text-sm mb-2">
+                      <div style={{ padding: '16px' }}>
+                        <div
+                          className="text-sm"
+                          style={{
+                            backgroundColor: 'oklch(0.77 0.18 163.22 / 0.13)',
+                            width: 'fit-content',
+                            borderRadius: '20px',
+                            fontWeight: 500,
+                            padding: '3px 8px',
+                            color: '#10b981',
+                            marginBottom: '6px',
+                          }}
+                        >
                           {product.category}
                         </div>
-                        <h3 className="text-white mb-3">
+                        <h3
+                          className="mb-3"
+                          style={{ color: '#111827', fontSize: '1.5rem', fontWeight: 700, lineHeight: 1.4, height: 55 }}
+                        >
                           {product.name}
                         </h3>
-                        <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                           {product.description}
                         </p>
-                        <button className="text-emerald-500 hover:text-emerald-400 transition-colors">
+                        <button
+                          className="text-emerald-500 hover:text-emerald-400 transition-colors cursor-pointer"
+                          style={{ padding: '4px 8px', border: '1px solid rgb(0, 188, 125)', borderRadius: '4px', fontSize: '14px' }}
+                        >
                           Details anzeigen →
                         </button>
                       </div>
@@ -205,29 +222,29 @@ export function ProductsPage() {
       {/* Product Detail Modal */}
       {selectedProduct && (
         <div 
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-white/95 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedProduct(null)}
         >
           <div 
-            className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto mx-4"
+            className="bg-white border border-gray-200 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto mx-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center">
-              <h2 className="text-white text-lg sm:text-xl pr-4">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+              <h2 className="text-gray-900 text-lg sm:text-xl pr-4">
                 {selectedProduct.name}
               </h2>
               <button
                 onClick={() => setSelectedProduct(null)}
-                className="p-2 hover:bg-gray-800 rounded-full transition-colors flex-shrink-0"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
               >
-                <X className="text-white" size={24} />
+                <X className="text-gray-900" size={24} />
               </button>
             </div>
 
             <div className="p-4 sm:p-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Product Image */}
-                <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square">
+                <div className="bg-gray-100 rounded-lg overflow-hidden aspect-square">
                   <ImageWithFallback
                     src={productImageCache[selectedProduct._id || selectedProduct.id] || getProductImage(selectedProduct.image)}
                     alt={selectedProduct.name}
@@ -241,15 +258,15 @@ export function ProductsPage() {
 
                 {/* Product Details */}
                 <div>
-                  <div className="inline-block bg-emerald-500/20 text-emerald-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-4 text-sm sm:text-base">
+                  <div className="inline-block bg-emerald-500/20 text-emerald-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-4 text-sm">
                     {selectedProduct.category}
                   </div>
 
-                  <p className="text-gray-300 mb-6 text-sm sm:text-base">
+                  <p className="text-gray-700 mb-6 text-sm">
                     {selectedProduct.description}
                   </p>
 
-                  <h3 className="text-white mb-4 text-lg sm:text-xl">
+                  <h3 className="text-gray-900 mb-4 text-lg sm:text-xl">
                     Produktmerkmale
                   </h3>
                   <ul className="space-y-2 sm:space-y-3">
@@ -262,7 +279,7 @@ export function ProductsPage() {
                             className="flex items-start gap-3"
                           >
                             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0"></div>
-                            <span className="text-gray-300">
+                            <span className="text-gray-700">
                               {feature}
                             </span>
                           </li>

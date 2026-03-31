@@ -50,9 +50,9 @@ export function WhatsAppButton() {
       
       {/* Tooltip */}
       {isHovered && (
-        <div className="absolute right-20 bg-gray-900 text-white px-3 py-2 rounded-lg whitespace-nowrap text-xs sm:text-sm hidden sm:block">
+        <div className="absolute right-20 bg-white border border-gray-200 text-gray-900 px-3 py-2 rounded-lg whitespace-nowrap text-sm hidden sm:block">
           WhatsApp Chat starten
-          <div className="absolute right-[-6px] top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
+          <div className="absolute right-[-6px] top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-white"></div>
         </div>
       )}
 

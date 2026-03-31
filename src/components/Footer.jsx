@@ -1,43 +1,50 @@
 import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/06e4e24f87a742479886d893331277b8ab950bb5.png';
+import logo from '../assets/Logo Weis3.PNG';
+import { useSiteContent } from '../context/SiteContentContext';
+
+function digitsOnly(s) {
+  return String(s || '').replace(/\D/g, '');
+}
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { site } = useSiteContent();
+  const sm = site.socialMedia || {};
+  const ci = site.contactInfo || {};
+  const waDigits = digitsOnly(ci.whatsapp || sm.whatsapp || '41765230726');
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="border-t border-gray-800" style={{ backgroundColor: '#000', color: '#fff' }}>
+      <div className="site-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Company Info */}
           <div>
             <div className="mb-4">
-              <img 
-                src={logo} 
-                alt="FliegengitterPro Logo" 
-                className="h-12 w-auto object-contain brightness-0 invert"
+              <img
+                src={logo}
+                alt="GuardFlex Logo"
+                width={60}
+                height={60}
+                className="h-[60px] w-[60px] shrink-0 object-contain brightness-0 invert opacity-95"
+                decoding="async"
               />
             </div>
-            <p className="text-gray-400 mb-4">
-              Ihr vertrauenswürdiger Partner für massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen in der Schweiz.
+            <p className="mb-4" style={{ color: '#fff' }}>
+              Ihr vertrauenswürdiger Partner für massgeschneiderte Fliegengitter-, Sonnenschutz- und
+              Plissee-Lösungen in der Schweiz.
             </p>
-            <div className="flex items-center gap-2">
-              <svg width="32" height="32" viewBox="0 0 32 32" className="rounded">
-                <rect width="32" height="32" fill="#FF0000"/>
-                <rect x="13" y="6" width="6" height="20" fill="white"/>
-                <rect x="6" y="13" width="20" height="6" fill="white"/>
-              </svg>
-            </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-lg mb-4">Schnellzugriff</h3>
-            <ul className="space-y-2">
+            <h3 className="text-lg mb-4" style={{ color: '#fff' }}>
+              Schnellzugriff
+            </h3>
+            <ul className="space-y-2" style={{ fontSize: '14px' }}>
               <li>
                 <Link
                   to="/products"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Produkte
                 </Link>
@@ -45,7 +52,8 @@ export function Footer() {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Dienstleistungen
                 </Link>
@@ -53,7 +61,8 @@ export function Footer() {
               <li>
                 <Link
                   to="/benefits"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Vorteile
                 </Link>
@@ -61,7 +70,8 @@ export function Footer() {
               <li>
                 <Link
                   to="/gallery"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Galerie
                 </Link>
@@ -69,7 +79,8 @@ export function Footer() {
               <li>
                 <Link
                   to="/history"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Geschichte
                 </Link>
@@ -77,7 +88,8 @@ export function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-400 hover:text-emerald-500 transition-colors"
+                  className="hover:text-emerald-400 transition-colors"
+                  style={{ color: '#fff' }}
                 >
                   Kontakt
                 </Link>
@@ -85,61 +97,99 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact & Social */}
           <div>
-            <h3 className="text-lg mb-4">Folgen Sie uns</h3>
+            <h3 className="text-lg mb-4" style={{ color: '#fff' }}>
+              Folgen Sie uns
+            </h3>
             <div className="flex gap-4 mb-6">
               <a
-                href="https://www.instagram.com/guardflex_/"
+                href={sm.instagram || 'https://www.instagram.com/guardflex_/'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-gray-800 hover:bg-emerald-500 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="w-12 h-12 bg-gray-700 hover:bg-emerald-500 text-white rounded-full flex items-center justify-center transition-all hover:scale-110"
               >
-                <Instagram size={24} />
+                <Instagram size={22} strokeWidth={1.5} />
               </a>
               <a
-                href="https://www.facebook.com"
+                href={sm.facebook || 'https://www.facebook.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-gray-800 hover:bg-emerald-500 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="w-12 h-12 bg-gray-700 hover:bg-emerald-500 text-white rounded-full flex items-center justify-center transition-all hover:scale-110"
               >
-                <Facebook size={24} />
+                <Facebook size={22} />
               </a>
               <a
-                href="https://wa.me/41765230726"
+                href={`https://wa.me/${waDigits}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-gray-800 hover:bg-[#25D366] rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="w-12 h-12 bg-gray-700 hover:bg-[#25D366] text-white rounded-full flex items-center justify-center transition-all hover:scale-110"
               >
-                <MessageCircle size={24} />
+                <MessageCircle size={22} strokeWidth={1.5} />
               </a>
             </div>
-            <div className="space-y-2 text-gray-400">
-              <p>📧 guard.flex@hotmail.com</p>
-              <p>📞 +41 765230726</p>
-              <p>📍 Solothurn, Switzerland</p>
+            <div className="space-y-2 flex flex-col gap-2" style={{ color: '#fff' }}>
+              <p className="flex items-center gap-2">
+                <span
+                  className="material-symbols-rounded"
+                  style={{ fontSize: 20, fontVariationSettings: "'FILL' 1" }}
+                >
+                  mail
+                </span>
+                {ci.email || 'guard.flex@hotmail.com'}
+              </p>
+              <p className="flex items-center gap-2">
+                <span
+                  className="material-symbols-rounded"
+                  style={{ fontSize: 20, fontVariationSettings: "'FILL' 1" }}
+                >
+                  call
+                </span>
+                {ci.phone || '+41 765230726'}
+              </p>
+              <p className="flex items-center gap-2">
+                <span
+                  className="material-symbols-rounded"
+                  style={{ fontSize: 20, fontVariationSettings: "'FILL' 1" }}
+                >
+                  location_on
+                </span>
+                {ci.address || 'Solothurn, Switzerland'}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8">
+        <div className="border-t border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex gap-6 text-sm">
-              <button className="text-gray-400 hover:text-emerald-500 transition-colors">
+            <div className="flex flex-wrap gap-6 text-sm justify-center md:justify-start">
+              <Link
+                to="/datenschutz"
+                className="hover:text-emerald-400 transition-colors"
+                style={{ color: '#fff' }}
+              >
                 Datenschutz
-              </button>
-              <button className="text-gray-400 hover:text-emerald-500 transition-colors">
+              </Link>
+              <Link
+                to="/impressum"
+                className="hover:text-emerald-400 transition-colors"
+                style={{ color: '#fff' }}
+              >
                 Impressum
-              </button>
-              <button className="text-gray-400 hover:text-emerald-500 transition-colors">
+              </Link>
+              <Link
+                to="/agb"
+                className="hover:text-emerald-400 transition-colors"
+                style={{ color: '#fff' }}
+              >
                 AGB
-              </button>
+              </Link>
             </div>
+            <p className="text-sm text-gray-500">
+              © {currentYear} {site.siteName || 'GuardFlex'}
+            </p>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-

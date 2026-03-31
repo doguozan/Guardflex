@@ -52,7 +52,7 @@ export function AdminProducts() {
         await api.createProduct(editingProduct);
         alert('Produkt erfolgreich erstellt!');
       } else {
-        await api.updateProduct(editingProduct._id, editingProduct);
+        await api.updateProduct(editingProduct.id, editingProduct);
         alert('Produkt erfolgreich aktualisiert!');
       }
       setEditingProduct(null);
@@ -102,7 +102,7 @@ export function AdminProducts() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-white">Produkte verwalten</h2>
+        <h2 className="text-gray-900">Produkte verwalten</h2>
         <button
           onClick={handleAdd}
           className="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-2"
@@ -125,20 +125,20 @@ export function AdminProducts() {
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
+              <p className="text-gray-600 mt-4">Produkte werden geladen...</p>
             </div>
           ) : productList.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-400">Keine Produkte vorhanden.</p>
+              <p className="text-gray-600">Keine Produkte vorhanden.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {productList.map((product) => (
                 <div
                   key={product._id || product.id}
-                  className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden"
+                  className="bg-white border border-gray-200 rounded-lg overflow-hidden"
                 >
-                  <div className="aspect-square bg-gray-800 flex items-center justify-center">
+                  <div className="aspect-square bg-gray-100 flex items-center justify-center">
                     {product.image ? (
                       <img
                         src={product.image}
@@ -151,14 +151,14 @@ export function AdminProducts() {
                   </div>
                   <div className="p-4">
                     <div className="text-emerald-400 text-sm mb-1">{product.category}</div>
-                    <h3 className="text-white mb-2">{product.name}</h3>
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    <h3 className="text-gray-900 mb-2">{product.name}</h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                       {product.description}
                     </p>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="flex-1 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
+                        className="flex-1 bg-white border border-gray-200 text-gray-900 px-4 py-2 rounded hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
                       >
                         <Edit size={16} />
                         Bearbeiten
@@ -180,9 +180,9 @@ export function AdminProducts() {
 
       {/* Edit/Add Form */}
       {editingProduct && (
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <div className="bg-white border border-gray-200 rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-white">
+            <h3 className="text-gray-900">
               {isAdding ? 'Neues Produkt hinzufügen' : 'Produkt bearbeiten'}
             </h3>
             <button
@@ -190,7 +190,7 @@ export function AdminProducts() {
                 setEditingProduct(null);
                 setIsAdding(false);
               }}
-              className="text-gray-400 hover:text-white"
+              className="text-gray-500 hover:text-gray-900"
             >
               <X size={24} />
             </button>
@@ -199,10 +199,10 @@ export function AdminProducts() {
           <div className="space-y-6">
             {/* Image Upload */}
             <div>
-              <label className="block text-gray-300 mb-2">Produktbild</label>
-              <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center hover:border-emerald-500 transition-colors cursor-pointer">
+              <label className="block text-gray-700 mb-2">Produktbild</label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-emerald-500 transition-colors cursor-pointer bg-white">
                 <ImageIcon className="mx-auto text-gray-500 mb-2" size={48} />
-                <p className="text-gray-400">Klicken oder ziehen Sie ein Bild hierher</p>
+                <p className="text-gray-600">Klicken oder ziehen Sie ein Bild hierher</p>
                 <p className="text-gray-500 text-sm mt-1">Empfohlene Groesse: 800x800px</p>
                 <input type="file" className="hidden" accept="image/*" />
               </div>
@@ -210,13 +210,13 @@ export function AdminProducts() {
 
             {/* Category */}
             <div>
-              <label className="block text-gray-300 mb-2">Kategorie</label>
+              <label className="block text-gray-700 mb-2">Kategorie</label>
               <select
                 value={editingProduct.category}
                 onChange={(e) =>
                   setEditingProduct({ ...editingProduct, category: e.target.value })
                 }
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:border-emerald-500"
               >
                 <option value="Insektenschutz">Insektenschutz</option>
                 <option value="Sonnenschutz">Sonnenschutz</option>
@@ -226,21 +226,21 @@ export function AdminProducts() {
 
             {/* Name */}
             <div>
-              <label className="block text-gray-300 mb-2">Produktname</label>
+              <label className="block text-gray-700 mb-2">Produktname</label>
               <input
                 type="text"
                 value={editingProduct.name}
                 onChange={(e) =>
                   setEditingProduct({ ...editingProduct, name: e.target.value })
                 }
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:border-emerald-500"
                 placeholder="z.B. Sonnenschutz Plissee"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-gray-300 mb-2">Beschreibung</label>
+              <label className="block text-gray-700 mb-2">Beschreibung</label>
               <RichTextEditor
                 value={editingProduct.description}
                 onChange={(value) =>
@@ -252,7 +252,7 @@ export function AdminProducts() {
             {/* Features */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-gray-300">Produktmerkmale</label>
+                <label className="text-gray-700">Produktmerkmale</label>
                 <button
                   onClick={addFeature}
                   className="text-emerald-400 hover:text-emerald-300 text-sm flex items-center gap-1"
@@ -268,7 +268,7 @@ export function AdminProducts() {
                       type="text"
                       value={feature}
                       onChange={(e) => updateFeature(index, e.target.value)}
-                      className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
+                      className="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:border-emerald-500"
                       placeholder="Merkmal eingeben"
                     />
                     <button
@@ -289,7 +289,7 @@ export function AdminProducts() {
                   setEditingProduct(null);
                   setIsAdding(false);
                 }}
-                className="px-6 py-2 border border-gray-700 text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
+                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 Abbrechen
               </button>

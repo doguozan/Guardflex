@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { SEO } from './components/SEO';
+import { SiteContentProvider } from './context/SiteContentContext';
 import { HomePage } from './pages/HomePage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ServicesPage } from './pages/ServicesPage';
@@ -10,6 +11,7 @@ import { BenefitsPage } from './pages/BenefitsPage';
 import { GalleryPage } from './pages/GalleryPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { ContactPage } from './pages/ContactPage';
+import { LegalPage } from './pages/LegalPage';
 import { AdminPage } from './pages/AdminPage';
 
 const PublicLayout = ({ children }) => (
@@ -24,6 +26,7 @@ const PublicLayout = ({ children }) => (
 
 export default function App() {
   return (
+    <SiteContentProvider>
     <Router>
       <Routes>
         {/* Admin Route - Without Header/Footer */}
@@ -86,8 +89,33 @@ export default function App() {
             </PublicLayout>
           }
         />
+        <Route
+          path="/datenschutz"
+          element={
+            <PublicLayout>
+              <LegalPage kind="datenschutz" />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/impressum"
+          element={
+            <PublicLayout>
+              <LegalPage kind="impressum" />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/agb"
+          element={
+            <PublicLayout>
+              <LegalPage kind="agb" />
+            </PublicLayout>
+          }
+        />
       </Routes>
     </Router>
+    </SiteContentProvider>
   );
 }
 

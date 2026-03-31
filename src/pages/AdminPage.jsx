@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Home, 
   Package, 
@@ -22,17 +22,39 @@ import { AdminGallery } from '../components/admin/AdminGallery';
 import { AdminHistory } from '../components/admin/AdminHistory';
 import { AdminContact } from '../components/admin/AdminContact';
 import { AdminSettings } from '../components/admin/AdminSettings';
-
-const CORRECT_USERNAME = 'GuardFlex';
-const CORRECT_PASSWORD = 'GuardFlex2025';
+import { api, setAdminToken, clearAdminToken } from '../utils/api';
 
 export function AdminPage() {
+  const [authChecking, setAuthChecking] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeSection, setActiveSection] = useState('home');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      try {
+        await api.adminMe();
+        if (!cancelled) setIsAuthenticated(true);
+      } catch {
+        clearAdminToken();
+        if (!cancelled) setIsAuthenticated(false);
+      } finally {
+        if (!cancelled) setAuthChecking(false);
+      }
+    };
+    if (typeof sessionStorage === 'undefined' || !sessionStorage.getItem('adminToken')) {
+      setAuthChecking(false);
+      return undefined;
+    }
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const menuItems = [
     { id: 'home', label: 'Startseite', icon: Home },
@@ -45,24 +67,24 @@ export function AdminPage() {
     { id: 'settings', label: 'Einstellungen', icon: Settings },
   ];
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    
-    if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+    try {
+      const data = await api.adminLogin({ username: username.trim(), password });
+      if (data.token) {
+        setAdminToken(data.token);
+      }
       setIsAuthenticated(true);
-      setError('');
-    } else if (username === CORRECT_USERNAME && password !== CORRECT_PASSWORD) {
-      // Sadece şifre yanlış olduğunda hata göster
-      setError('Passwort ist falsch');
       setPassword('');
-    } else {
-      // Kullanıcı adı yanlışsa sessizce reddet (güvenlik için)
+    } catch {
+      setError('Benutzername oder Passwort ist falsch');
       setPassword('');
     }
   };
 
   const handleLogout = () => {
+    clearAdminToken();
     setIsAuthenticated(false);
     setUsername('');
     setPassword('');
@@ -92,12 +114,20 @@ export function AdminPage() {
     }
   };
 
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <p className="text-gray-600 text-sm">Wird geladen…</p>
+      </div>
+    );
+  }
+
   // Login Screen
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <div 
-          className="bg-gray-900 rounded-2xl border border-gray-800 p-8 shadow-2xl"
+          className="bg-white rounded-2xl border border-gray-200 p-8 shadow-2xl"
           style={{ width: '400px', maxWidth: '90%' }}
         >
           <div className="flex flex-col items-center">
@@ -106,20 +136,20 @@ export function AdminPage() {
               <div className="inline-block bg-emerald-500/10 border border-emerald-500/20 px-6 py-3 rounded-full mb-4">
                 <Lock className="text-emerald-500 mx-auto" size={40} />
               </div>
-              <h2 className="text-white text-2xl mb-2">Admin Panel</h2>
-              <p className="text-gray-400 text-sm">Bitte melden Sie sich an</p>
+              <h2 className="text-gray-900 text-2xl mb-2">Admin Panel</h2>
+              <p className="text-gray-600 text-sm">Bitte melden Sie sich an</p>
             </div>
 
             {/* Login Form */}
             <form onSubmit={handleLogin} className="w-full space-y-6 flex flex-col items-center">
               {/* Username Input */}
               <div className="w-[280px] flex flex-col items-center">
-                <label className="block text-gray-300 mb-2 text-sm font-medium w-full">
+                <label className="block text-gray-700 mb-2 text-sm font-medium w-full">
                   Benutzername
                 </label>
                 <div className="flex items-center gap-3 w-full">
                   <div className="flex-shrink-0">
-                    <User className="text-gray-400" size={20} />
+                    <User className="text-gray-500" size={20} />
                   </div>
                   <input
                     type="text"
@@ -128,7 +158,7 @@ export function AdminPage() {
                       setUsername(e.target.value);
                       setError('');
                     }}
-                    className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                    className="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:border-emerald-500 transition-colors"
                     placeholder="Benutzername eingeben"
                     required
                   />
@@ -137,12 +167,12 @@ export function AdminPage() {
 
               {/* Password Input */}
               <div className="w-[280px] flex flex-col items-center">
-                <label className="block text-gray-300 mb-2 text-sm font-medium w-full">
+                <label className="block text-gray-700 mb-2 text-sm font-medium w-full">
                   Passwort
                 </label>
                 <div className="flex items-center gap-3 w-full">
                   <div className="flex-shrink-0">
-                    <Lock className="text-gray-400" size={20} />
+                    <Lock className="text-gray-500" size={20} />
                   </div>
                   <input
                     type="password"
@@ -151,7 +181,7 @@ export function AdminPage() {
                       setPassword(e.target.value);
                       setError('');
                     }}
-                    className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                    className="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:border-emerald-500 transition-colors"
                     placeholder="Passwort eingeben"
                     required
                   />
@@ -184,18 +214,18 @@ export function AdminPage() {
 
   // Admin Panel
   return (
-    <div className="min-h-screen bg-gray-950 flex">
+    <div className="min-h-screen bg-white flex">
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gray-900 border-r border-gray-800 transform transition-transform duration-300 ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div className="h-full flex flex-col">
           {/* Logo/Header */}
-          <div className="p-6 border-b border-gray-800">
-            <h2 className="text-white">Admin Panel</h2>
-            <p className="text-gray-400 text-sm mt-1">FliegengitterPro</p>
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-gray-900">Admin Panel</h2>
+            <p className="text-gray-600 text-sm mt-1">GuardFlex</p>
           </div>
 
           {/* Navigation */}
@@ -213,7 +243,7 @@ export function AdminPage() {
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         activeSection === item.id
                           ? 'bg-emerald-500 text-white'
-                          : 'text-gray-300 hover:bg-gray-800'
+                          : 'text-gray-700 hover:bg-gray-100'
                       }`}
                     >
                       <Icon size={20} />
@@ -226,7 +256,7 @@ export function AdminPage() {
           </nav>
 
           {/* Logout */}
-          <div className="p-4 border-t border-gray-800">
+          <div className="p-4 border-t border-gray-200">
             <button 
               onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
@@ -241,19 +271,19 @@ export function AdminPage() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Bar */}
-        <header className="bg-gray-900 border-b border-gray-800 px-6 py-4">
+        <header className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="lg:hidden p-2 text-white hover:bg-gray-800 rounded-lg"
+              className="lg:hidden p-2 text-gray-900 hover:bg-gray-100 rounded-lg"
             >
               {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-            <h1 className="text-white">
+            <h1 className="text-gray-900">
               {menuItems.find((item) => item.id === activeSection)?.label}
             </h1>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 text-sm">Admin User</span>
+              <span className="text-gray-600 text-sm">Admin User</span>
             </div>
           </div>
         </header>

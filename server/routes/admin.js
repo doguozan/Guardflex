@@ -2,11 +2,9 @@
 import express from 'express';
 import Admin from '../models/Admin.js';
 import Settings from '../models/Settings.js';
+import { signAdminToken, requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-
-// TODO: Add authentication middleware
-// const authenticateAdmin = require('../middleware/auth');
 
 // Admin login
 router.post('/login', async (req, res) => {
@@ -34,17 +32,18 @@ router.post('/login', async (req, res) => {
     // Update last login
     admin.lastLogin = new Date();
     await admin.save();
-    
-    // TODO: Generate JWT token
+
+    const token = signAdminToken(admin);
+
     res.json({ 
       success: true, 
       message: 'Login successful',
+      token,
       admin: {
         username: admin.username,
         email: admin.email,
         role: admin.role
       }
-      // token: generateToken(admin)
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -52,8 +51,15 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/me', requireAuth, (req, res) => {
+  res.json({
+    username: req.admin.username,
+    role: req.admin.role,
+  });
+});
+
 // Get admin settings
-router.get('/settings', async (req, res) => {
+router.get('/settings', requireAuth, async (req, res) => {
   try {
     const settings = await Settings.getSettings();
     res.json(settings);
@@ -63,18 +69,58 @@ router.get('/settings', async (req, res) => {
   }
 });
 
-// Update admin settings
-router.put('/settings', async (req, res) => {
+// Update admin settings (patch; verschachtelte Objekte werden zusammengeführt)
+router.put('/settings', requireAuth, async (req, res) => {
   try {
-    let settings = await Settings.findOne();
-    
-    if (!settings) {
-      settings = await Settings.create(req.body);
-    } else {
-      Object.assign(settings, req.body);
-      await settings.save();
+    const settings = await Settings.getSettings();
+    const b = req.body || {};
+
+    if (b.siteName !== undefined) settings.siteName = b.siteName;
+
+    if (b.hero !== undefined) {
+      const cur = settings.hero?.toObject?.() ?? settings.hero ?? {};
+      settings.hero = { ...cur, ...b.hero };
+      settings.markModified('hero');
     }
-    
+
+    if (b.contactInfo !== undefined) {
+      const cur = settings.contactInfo?.toObject?.() ?? settings.contactInfo ?? {};
+      settings.contactInfo = { ...cur, ...b.contactInfo };
+      settings.markModified('contactInfo');
+    }
+
+    if (b.socialMedia !== undefined) {
+      const cur = settings.socialMedia?.toObject?.() ?? settings.socialMedia ?? {};
+      settings.socialMedia = { ...cur, ...b.socialMedia };
+      settings.markModified('socialMedia');
+    }
+
+    if (b.cms !== undefined && typeof b.cms === 'object') {
+      const cur =
+        settings.cms && typeof settings.cms === 'object' && !Array.isArray(settings.cms)
+          ? settings.cms
+          : {};
+      const next = { ...cur };
+      const deepMergeKeys = new Set(['history', 'branding']);
+      for (const [k, v] of Object.entries(b.cms)) {
+        if (v === undefined) continue;
+        if (deepMergeKeys.has(k) && v && typeof v === 'object' && !Array.isArray(v)) {
+          next[k] = { ...(cur[k] && typeof cur[k] === 'object' ? cur[k] : {}), ...v };
+        } else {
+          next[k] = v;
+        }
+      }
+      settings.cms = next;
+      settings.markModified('cms');
+    }
+
+    if (b.legal !== undefined && typeof b.legal === 'object') {
+      const cur = settings.legal?.toObject?.() ?? settings.legal ?? {};
+      settings.legal = { ...cur, ...b.legal };
+      settings.markModified('legal');
+    }
+
+    await settings.save();
     res.json({ message: 'Settings updated', settings });
   } catch (error) {
     console.error('Error updating settings:', error);

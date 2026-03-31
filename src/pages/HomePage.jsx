@@ -1,18 +1,32 @@
 import { Hero } from '../components/Hero';
 import { Benefits } from '../components/Benefits';
 import { ProductSlider } from '../components/ProductSlider';
-import animationVideo from '../assets/our-works/GuardFlex-Animasyon/Instelling van de Draad.mp4';
+import animationVideo from '../assets/GuardFlex1.mp4';
+import videoSectionBg from '../assets/video_section_bg.png';
 
 export function HomePage() {
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-white min-h-screen">
       <Hero />
       <Benefits />
-      
-      {/* Animation Video Section */}
-      <section className="section-padding bg-black py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-2xl aspect-video max-h-[80vh]">
+
+      <ProductSlider />
+
+      {/* Animation Video Section - Full width, background + video overlay */}
+      <section
+        className="relative w-full py-12 sm:py-16 md:py-0 md:min-h-screen flex items-center justify-center"
+        style={{
+          backgroundImage: `url(${videoSectionBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="w-full px-4 sm:px-6 lg:px-8 flex justify-center">
+          <div
+            className="relative overflow-hidden rounded-2xl aspect-video bg-white shadow-2xl"
+            style={{ width: '100%', maxWidth: 800 }}
+          >
             <video
               src={animationVideo}
               className="w-full h-full object-cover gallery-video"
@@ -32,8 +46,6 @@ export function HomePage() {
           </div>
         </div>
       </section>
-
-      <ProductSlider />
     </div>
   );
 }

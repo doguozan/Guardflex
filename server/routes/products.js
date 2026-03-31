@@ -1,6 +1,7 @@
 // Express Router for Products
 import express from 'express';
 import Product from '../models/Product.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -43,8 +44,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST create new product (admin only - add auth later)
-router.post('/', async (req, res) => {
+// POST create new product (admin only)
+router.post('/', requireAuth, async (req, res) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({ message: 'Product created', product: newProduct });
@@ -58,7 +59,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT update product (admin only)
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const updatedProduct = await Product.findOneAndUpdate(
@@ -79,7 +80,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE product (admin only)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const deletedProduct = await Product.findOneAndDelete({ id });

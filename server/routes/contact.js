@@ -1,19 +1,40 @@
 // Express Router for Contact Form
 import express from 'express';
 import Contact from '../models/Contact.js';
+import { requireAuth } from '../middleware/auth.js';
+import { sendContactFormNotification } from '../services/mail.js';
 
 const router = express.Router();
 
-// POST submit contact form
+const MAX_LEN = { name: 200, email: 320, phone: 50, subject: 200, message: 8000 };
+
+function trimStr(v, max) {
+  if (v == null) return '';
+  const s = String(v).trim();
+  return s.length > max ? s.slice(0, max) : s;
+}
+
+// POST submit contact form (public)
 router.post('/', async (req, res) => {
   try {
-    const { name, email, phone, message, subject } = req.body;
+    let { name, email, phone, message, subject } = req.body;
+
+    name = trimStr(name, MAX_LEN.name);
+    email = trimStr(email, MAX_LEN.email).toLowerCase();
+    phone = trimStr(phone, MAX_LEN.phone);
+    message = trimStr(message, MAX_LEN.message);
+    subject = trimStr(subject, MAX_LEN.subject);
 
     // Validate required fields
     if (!name || !email || !message) {
       return res.status(400).json({ 
         error: 'Missing required fields: name, email, message' 
       });
+    }
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) {
+      return res.status(400).json({ error: 'Invalid email address' });
     }
 
     // Get IP address
@@ -30,14 +51,19 @@ router.post('/', async (req, res) => {
       status: 'new'
     });
 
-    // TODO: Send email notification
-    // await sendEmail({ 
-    //   to: 'guard.flex@hotmail.com', 
-    //   subject: subject || 'New Contact Form Submission',
-    //   message 
-    // });
-
     console.log('Contact form submission saved:', contactSubmission._id);
+
+    const mailResult = await sendContactFormNotification({
+      name,
+      email,
+      phone,
+      message,
+      subject,
+      id: contactSubmission._id,
+    });
+    if (!mailResult.sent && mailResult.reason !== 'not_configured') {
+      console.error('[contact] Speicherung OK, E-Mail-Benachrichtigung fehlgeschlagen:', mailResult.reason);
+    }
 
     res.status(200).json({ 
       success: true,
@@ -51,7 +77,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET all contact submissions (admin only)
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const { status } = req.query;
     const query = status ? { status } : {};
@@ -68,7 +94,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET single contact submission (admin only)
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireAuth, async (req, res) => {
   try {
     const contact = await Contact.findById(req.params.id);
     
@@ -84,7 +110,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // PUT update contact status (admin only)
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { status } = req.body;
     const contact = await Contact.findByIdAndUpdate(

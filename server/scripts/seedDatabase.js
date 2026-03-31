@@ -51,16 +51,22 @@ const seedDatabase = async () => {
     // Seed Settings (if doesn't exist)
     const settingsExists = await Settings.findOne();
     if (!settingsExists) {
+      const { LEGAL_PLACEHOLDERS } = await import('../../src/data/siteContentDefaults.js');
       await Settings.create({
         siteName: 'GuardFlex',
         contactInfo: {
           email: 'guard.flex@hotmail.com',
           phone: '+41 765230726',
           address: 'Solothurn, Switzerland',
-          whatsapp: '41765230726'
+          whatsapp: '41765230726',
+          formTitle: 'Kontaktieren Sie uns',
+          formDescription:
+            'Haben Sie Fragen oder möchten Sie ein kostenloses Angebot erhalten? Wir sind für Sie da!',
         },
         hero: {
           badge: 'Qualität aus der Schweiz',
+          headline:
+            'Massgefertigte Lösungen für Insektenschutz, Sonnenschutz und Sichtschutz',
           title: 'Massgeschneiderte Fliegengitter-, Sonnenschutz- und Plissee-Lösungen',
           description: 'Wir sind Ihr vertrauenswürdiger Partner in Ihrer Nähe für individuell gestaltete Fliegengitter, Sonnenschutz und Plissee-Lösungen!',
           features: [
@@ -68,7 +74,12 @@ const seedDatabase = async () => {
             { title: '2 Jahre Produkt-&', subtitle: 'Servicegarantie' },
             { title: 'Preisgarantie', subtitle: 'Beste Angebote' }
           ]
-        }
+        },
+        legal: {
+          datenschutz: LEGAL_PLACEHOLDERS.datenschutz,
+          impressum: LEGAL_PLACEHOLDERS.impressum,
+          agb: LEGAL_PLACEHOLDERS.agb,
+        },
       });
       console.log('✅ Created default settings');
     } else {

@@ -21,9 +21,47 @@ const getApiBaseUrl = () => {
   return 'http://localhost:3001/api';
 };
 
-const API_BASE_URL = getApiBaseUrl();
+export const API_BASE_URL = getApiBaseUrl();
+
+const ADMIN_TOKEN_KEY = 'adminToken';
+
+function getAdminToken() {
+  if (typeof sessionStorage === 'undefined') return null;
+  return sessionStorage.getItem(ADMIN_TOKEN_KEY);
+}
+
+export function setAdminToken(token) {
+  if (typeof sessionStorage === 'undefined') return;
+  if (token) sessionStorage.setItem(ADMIN_TOKEN_KEY, token);
+  else sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+}
+
+export function clearAdminToken() {
+  setAdminToken(null);
+}
+
+function authHeaders(jsonBody = true) {
+  const headers = {};
+  if (jsonBody) {
+    headers['Content-Type'] = 'application/json';
+  }
+  const t = getAdminToken();
+  if (t) {
+    headers['Authorization'] = `Bearer ${t}`;
+  }
+  return headers;
+}
 
 export const api = {
+  /** Öffentliche Site-Daten (ohne Admin-Token) */
+  async getSiteContent() {
+    const response = await fetch(`${API_BASE_URL}/site`);
+    if (!response.ok) {
+      throw new Error('Failed to load site content');
+    }
+    return response.json();
+  },
+
   // Products
   async getProducts(category = null) {
     const url = category && category !== 'Alle' 
@@ -60,11 +98,9 @@ export const api = {
   },
 
   async updateProduct(id, productData) {
-    const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/products/${encodeURIComponent(id)}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authHeaders(),
       body: JSON.stringify(productData),
     });
     if (!response.ok) {
@@ -74,8 +110,9 @@ export const api = {
   },
 
   async deleteProduct(id) {
-    const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/products/${encodeURIComponent(id)}`, {
       method: 'DELETE',
+      headers: authHeaders(false),
     });
     if (!response.ok) {
       throw new Error('Failed to delete product');
@@ -104,7 +141,7 @@ export const api = {
       ? `${API_BASE_URL}/contact?status=${encodeURIComponent(status)}`
       : `${API_BASE_URL}/contact`;
     
-    const response = await fetch(url);
+    const response = await fetch(url, { headers: authHeaders(false) });
     if (!response.ok) {
       throw new Error('Failed to fetch contacts');
     }
@@ -121,14 +158,26 @@ export const api = {
       body: JSON.stringify(credentials),
     });
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json().catch(() => ({}));
       throw new Error(error.error || 'Login failed');
     }
     return response.json();
   },
 
+  async adminMe() {
+    const response = await fetch(`${API_BASE_URL}/admin/me`, {
+      headers: authHeaders(false),
+    });
+    if (!response.ok) {
+      throw new Error('Session invalid');
+    }
+    return response.json();
+  },
+
   async getSettings() {
-    const response = await fetch(`${API_BASE_URL}/admin/settings`);
+    const response = await fetch(`${API_BASE_URL}/admin/settings`, {
+      headers: authHeaders(false),
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch settings');
     }
@@ -138,9 +187,7 @@ export const api = {
   async updateSettings(settings) {
     const response = await fetch(`${API_BASE_URL}/admin/settings`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authHeaders(),
       body: JSON.stringify(settings),
     });
     if (!response.ok) {

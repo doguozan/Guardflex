@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { useSiteContent } from '../context/SiteContentContext';
 
 // Import gallery images from our-works folder
 import galleryImage2 from '../assets/our-works/2.jpeg';
@@ -8,6 +9,10 @@ import galleryImage3 from '../assets/our-works/3.jpeg';
 import galleryImage4 from '../assets/our-works/4.jpeg';
 import galleryImage5 from '../assets/our-works/5.jpeg';
 import galleryImage7 from '../assets/our-works/7.jpeg';
+import galleryImageAsdasdas from '../assets/our-works/asdasdas.jpeg';
+import galleryImageHuard from '../assets/our-works/huard.jpeg';
+import galleryImageWhatsApp1 from '../assets/our-works/WhatsApp Image 2026-03-11 at 20.39.24.jpeg';
+import galleryImageWhatsApp2 from '../assets/our-works/WhatsApp Image 2026-03-11 at 20.39.24wasdas.jpeg';
 
 // Import gallery videos from Guard-video folder
 import galleryVideo1 from '../assets/Guard-video/video1.mp4';
@@ -15,11 +20,7 @@ import galleryVideo2 from '../assets/Guard-video/video2.mp4';
 import galleryVideo3 from '../assets/Guard-video/video3.mp4';
 import galleryVideo4 from '../assets/Guard-video/video4.mp4';
 
-export function Gallery() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const videoRef = useRef(null);
-
-  const mediaItems = [
+const DEFAULT_GALLERY_ITEMS = [
     {
       type: 'image',
       url: galleryImage2,
@@ -46,6 +47,26 @@ export function Gallery() {
       title: 'Unsere Arbeit',
     },
     {
+      type: 'image',
+      url: galleryImageAsdasdas,
+      title: 'Unsere Arbeit',
+    },
+    {
+      type: 'image',
+      url: galleryImageHuard,
+      title: 'Unsere Arbeit',
+    },
+    {
+      type: 'image',
+      url: galleryImageWhatsApp1,
+      title: 'Unsere Arbeit',
+    },
+    {
+      type: 'image',
+      url: galleryImageWhatsApp2,
+      title: 'Unsere Arbeit',
+    },
+    {
       type: 'video',
       url: galleryVideo1,
       title: 'Unsere Arbeit',
@@ -65,7 +86,24 @@ export function Gallery() {
       url: galleryVideo4,
       title: 'Unsere Arbeit',
     },
-  ];
+];
+
+export function Gallery() {
+  const { site } = useSiteContent();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const videoRef = useRef(null);
+
+  const mediaItems = useMemo(() => {
+    const g = site?.cms?.gallery;
+    if (Array.isArray(g) && g.length > 0) {
+      return g.map((item) => ({
+        type: item.type === 'video' ? 'video' : 'image',
+        url: item.url,
+        title: item.title || item.alt || 'Unsere Arbeit',
+      }));
+    }
+    return DEFAULT_GALLERY_ITEMS;
+  }, [site?.cms?.gallery]);
 
   // Hide volume controls when video is loaded
   useEffect(() => {
@@ -174,12 +212,12 @@ export function Gallery() {
   };
 
   return (
-    <section id="gallery" className="section-padding bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="gallery" className="section-padding bg-white">
+      <div className="site-container">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-white mb-4">Unsere Projekte</h2>
-          <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+          <h2 className="text-gray-900 mb-4">Unsere Projekte</h2>
+          <p className="text-gray-600 text-xl max-w-3xl mx-auto">
             Entdecken Sie unsere hochwertigen Fliegengitter-, Sonnenschutz- und Plissee-Installationen
           </p>
         </div>
@@ -189,7 +227,7 @@ export function Gallery() {
           {mediaItems.map((item, index) => (
             <div
               key={index}
-              className="group relative aspect-square overflow-hidden rounded-2xl cursor-pointer shadow-md hover:shadow-2xl hover:shadow-white/5 transition-all duration-300 border border-gray-800"
+              className="group relative aspect-square overflow-hidden rounded-2xl cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 bg-white"
               onClick={() => openLightbox(index)}
             >
               {item.type === 'image' ? (
@@ -221,9 +259,9 @@ export function Gallery() {
                   }}
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <p className="text-white">{item.title}</p>
+                  <p className="text-gray-900">{item.title}</p>
                 </div>
               </div>
             </div>
@@ -232,13 +270,13 @@ export function Gallery() {
 
         {/* Lightbox */}
         {selectedImage !== null && (
-          <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
+          <div className="fixed inset-0 z-50 bg-white/95 flex items-center justify-center" onClick={closeLightbox}>
             {/* Close Button */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+              className="absolute top-4 right-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors z-10"
             >
-              <X className="text-white" size={32} />
+              <X className="text-gray-900" size={32} />
             </button>
 
             {/* Previous Button */}
@@ -247,9 +285,9 @@ export function Gallery() {
                 e.stopPropagation();
                 goToPrevious();
               }}
-              className="absolute left-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+              className="absolute left-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors z-10"
             >
-              <ChevronLeft className="text-white" size={32} />
+              <ChevronLeft className="text-gray-900" size={32} />
             </button>
 
             {/* Next Button */}
@@ -258,9 +296,9 @@ export function Gallery() {
                 e.stopPropagation();
                 goToNext();
               }}
-              className="absolute right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+              className="absolute right-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors z-10"
             >
-              <ChevronRight className="text-white" size={32} />
+              <ChevronRight className="text-gray-900" size={32} />
             </button>
 
             {/* Media (Image or Video) */}
@@ -317,7 +355,7 @@ export function Gallery() {
                   }}
                 />
               )}
-              <p className="text-white text-center mt-4">{mediaItems[selectedImage].title}</p>
+              <p className="text-gray-900 text-center mt-4">{mediaItems[selectedImage].title}</p>
             </div>
           </div>
         )}

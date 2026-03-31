@@ -47,11 +47,12 @@ export function ProductSlider() {
   // Slider'da gösterilecek ürün sayısı (responsive)
   const getVisibleCount = () => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth >= 1024) return 3; // lg: 3 ürün
-      if (window.innerWidth >= 768) return 2;  // md: 2 ürün
-      return 1; // sm: 1 ürün
+      if (window.innerWidth >= 1280) return 4;   // xl: 4 kart
+      if (window.innerWidth >= 1024) return 3;  // lg: 3 kart (1024-1280px)
+      if (window.innerWidth >= 768) return 2;    // md: 2 kart (768-1024px)
+      return 1;                                  // mobil: 1 kart
     }
-    return 3;
+    return 4;
   };
 
   const [visibleCount, setVisibleCount] = useState(getVisibleCount());
@@ -126,17 +127,17 @@ export function ProductSlider() {
   };
 
   return (
-    <section className="section-padding bg-black py-12 sm:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="section-padding bg-white py-12 sm:py-16">
+      <div className="site-container">
         {/* Section Header - Daha kompakt */}
         <div className="text-center mb-8 sm:mb-10">
           <div className="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-3 animate-fade-in">
-            <span className="text-emerald-500 text-xs sm:text-sm">Unsere Produkte</span>
+            <span className="text-emerald-500 text-sm">Unsere Produkte</span>
           </div>
-          <h2 className="text-white mb-2 sm:mb-3 text-xl sm:text-2xl lg:text-3xl animate-slide-up">
+          <h2 className="text-gray-900 mb-2 sm:mb-3 text-xl sm:text-2xl lg:text-3xl animate-slide-up">
             Beliebte Produkte
           </h2>
-          <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-gray-600 text-sm lg:text-lg max-w-3xl mx-auto animate-fade-in-delay">
             Entdecken Sie unsere hochwertigen Fliegengitter-, Sonnenschutz- und Plissee-Lösungen
           </p>
         </div>
@@ -148,51 +149,60 @@ export function ProductSlider() {
             onClick={goToPrevious}
             onMouseDown={(e) => e.preventDefault()}
             type="button"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 lg:-translate-x-8 z-10 w-8 h-8 sm:w-10 sm:h-10 bg-gray-900/90 backdrop-blur-sm border border-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-500/20 hover:border-emerald-500 hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 lg:-translate-x-8 z-10 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg"
             aria-label="Vorherige Produkte"
             style={{ 
+              backgroundColor: '#000',
+              color: '#fff',
+              width: 34,
+              height: 34,
               opacity: isTransitioning ? 0.5 : 1,
               cursor: isTransitioning ? 'not-allowed' : 'pointer',
               pointerEvents: isTransitioning ? 'none' : 'auto'
             }}
           >
-            <ChevronLeft className="text-white" size={18} />
+            <ChevronLeft size={18} />
           </button>
 
           <button
             onClick={goToNext}
             onMouseDown={(e) => e.preventDefault()}
             type="button"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 lg:translate-x-8 z-10 w-8 h-8 sm:w-10 sm:h-10 bg-gray-900/90 backdrop-blur-sm border border-gray-800 rounded-full flex items-center justify-center hover:bg-emerald-500/20 hover:border-emerald-500 hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 lg:translate-x-8 z-10 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg"
             aria-label="Nächste Produkte"
             style={{ 
+              backgroundColor: '#000',
+              color: '#fff',
+              width: 34,
+              height: 34,
               opacity: isTransitioning ? 0.5 : 1,
               cursor: isTransitioning ? 'not-allowed' : 'pointer',
               pointerEvents: isTransitioning ? 'none' : 'auto'
             }}
           >
-            <ChevronRight className="text-white" size={18} />
+            <ChevronRight size={18} />
           </button>
 
           {/* Products Slider - Daha kompakt gap ve smooth animasyon */}
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-400 mt-4">Produkte werden geladen...</p>
+              <p className="text-gray-600 mt-4">Produkte werden geladen...</p>
             </div>
           ) : featuredProducts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-400">Keine Produkte verfügbar.</p>
+              <p className="text-gray-600">Keine Produkte verfügbar.</p>
             </div>
           ) : (
             <div className="overflow-hidden rounded-xl">
               <div
                 ref={sliderRef}
-                className="flex transition-transform gap-3 sm:gap-4 touch-pan-y"
+                className="flex transition-transform touch-pan-y"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
                 style={{
+                  gap: '20px',
                   transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
                   willChange: 'transform',
                   transitionDuration: '400ms',
@@ -204,14 +214,14 @@ export function ProductSlider() {
                   <div
                     key={product._id || product.id}
                     onClick={() => handleProductClick(product._id || product.id)}
-                    className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-500 group flex-shrink-0 transform hover:-translate-y-2"
+                    className="bg-white backdrop-blur-sm border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:border-emerald-500 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-500 group flex-shrink-0 transform hover:-translate-y-2"
                     style={{
-                      width: `calc(${100 / visibleCount}% - ${(visibleCount - 1) * 12 / visibleCount}px)`,
+                      width: `calc(${100 / visibleCount}% - ${(visibleCount - 1) * 20 / visibleCount}px)`,
                       animationDelay: `${index * 50}ms`,
                     }}
                   >
-                    <div className="aspect-square overflow-hidden bg-gray-800/50 relative">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                    <div className="aspect-square overflow-hidden bg-gray-100 relative">
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                       <ImageWithFallback
                         src={getProductImage(product.image)}
                         alt={`${product.name} - Fliegengitter oder Sonnenschutz von GuardFlex`}
@@ -224,17 +234,34 @@ export function ProductSlider() {
                         height={400}
                       />
                     </div>
-                    <div className="p-[10px]">
-                      <div className="text-emerald-400 text-xs mb-1.5 font-medium animate-fade-in">
+                    <div style={{ padding: '16px' }}>
+                      <div
+                        className="text-sm animate-fade-in"
+                        style={{
+                          backgroundColor: 'oklch(0.77 0.18 163.22 / 0.13)',
+                          width: 'fit-content',
+                          borderRadius: '20px',
+                          fontWeight: 500,
+                          padding: '3px 8px',
+                          color: '#10b981',
+                          marginBottom: '6px',
+                        }}
+                      >
                         {product.category}
                       </div>
-                      <h3 className="text-white mb-1.5 sm:mb-2 text-sm sm:text-base line-clamp-2 group-hover:text-emerald-400 transition-colors duration-300">
+                      <h3
+                        className="line-clamp-2 group-hover:text-emerald-400 transition-colors duration-300"
+                        style={{ color: '#111827', fontSize: '1.5rem', fontWeight: 700, lineHeight: 1.4, height: 55 }}
+                      >
                         {product.name}
                       </h3>
-                      <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2">
+                      <p className="text-gray-600 text-sm mb-2 sm:mb-3 line-clamp-2">
                         {product.description}
                       </p>
-                      <button className="text-emerald-500 hover:text-emerald-400 transition-all duration-300 text-xs sm:text-sm font-medium group-hover:translate-x-1 inline-flex items-center gap-1">
+                      <button
+                        className="text-emerald-500 hover:text-emerald-400 transition-all duration-300 text-sm font-medium group-hover:translate-x-1 inline-flex items-center gap-1 cursor-pointer"
+                        style={{ padding: '4px 8px', border: '1px solid rgb(0, 188, 125)', borderRadius: '4px', fontSize: '14px' }}
+                      >
                         Details anzeigen
                         <span className="inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
                       </button>
@@ -245,8 +272,8 @@ export function ProductSlider() {
             </div>
           )}
 
-          {/* Dots Indicator - Daha kompakt */}
-          <div className="flex justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8">
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-6 sm:mt-8" style={{ gap: '6px' }}>
             {Array.from({ length: maxIndex + 1 }).map((_, index) => (
               <button
                 key={index}
@@ -257,11 +284,16 @@ export function ProductSlider() {
                     setTimeout(() => setIsTransitioning(false), 300);
                   }
                 }}
-                className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 ${
+                className={`rounded-full transition-all duration-500 ${
                   index === currentIndex
-                    ? 'bg-emerald-500 w-6 sm:w-8 shadow-lg shadow-emerald-500/50'
-                    : 'bg-gray-700 hover:bg-gray-600 w-1.5 sm:w-2'
+                    ? 'bg-emerald-500 shadow-lg shadow-emerald-500/50'
+                    : ''
                 }`}
+                style={{
+                  width: index === currentIndex ? 22 : 10,
+                  height: 10,
+                  backgroundColor: index === currentIndex ? undefined : '#ddd',
+                }}
                 aria-label={`Gehe zu Slide ${index + 1}`}
               />
             ))}
@@ -272,7 +304,8 @@ export function ProductSlider() {
         <div className="text-center mt-8 sm:mt-10">
           <button
             onClick={() => navigate('/products')}
-            className="bg-emerald-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-emerald-500/30 text-sm sm:text-base font-medium"
+            className="bg-emerald-500 text-white px-6 sm:px-8 rounded-full hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-emerald-500/30"
+            style={{ height: 40, fontSize: 14, fontWeight: 600 }}
           >
             Alle Produkte anzeigen
           </button>

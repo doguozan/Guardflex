@@ -22,6 +22,15 @@ const settingsSchema = new mongoose.Schema({
     whatsapp: {
       type: String,
       default: '41765230726'
+    },
+    formTitle: {
+      type: String,
+      default: 'Kontaktieren Sie uns'
+    },
+    formDescription: {
+      type: String,
+      default:
+        'Wir melden uns innerhalb von 24 Stunden bei Ihnen.'
     }
   },
   hero: {
@@ -37,6 +46,17 @@ const settingsSchema = new mongoose.Schema({
   socialMedia: {
     instagram: String,
     facebook: String
+  },
+  /** Öffentliche Seiteninhalte (JSON), Admin-Editoren */
+  cms: {
+    type: mongoose.Schema.Types.Mixed,
+    default: () => ({})
+  },
+  /** Datenschutz, Impressum, AGB (HTML) */
+  legal: {
+    datenschutz: { type: String, default: '' },
+    impressum: { type: String, default: '' },
+    agb: { type: String, default: '' }
   }
 }, {
   timestamps: true

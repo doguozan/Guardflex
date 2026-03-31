@@ -145,7 +145,7 @@ export function ImageWithFallback(props) {
   if (didError) {
     return (
       <div
-        className={`inline-block bg-gray-800 text-center align-middle ${className ?? ''}`}
+        className={`inline-block bg-gray-100 text-center align-middle ${className ?? ''}`}
         style={style}
       >
         <div className="flex items-center justify-center w-full h-full">
@@ -159,7 +159,7 @@ export function ImageWithFallback(props) {
     <div className="relative w-full h-full" ref={imgRef}>
       {/* Loading placeholder */}
       {!isLoaded && (
-        <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-100 animate-pulse" />
       )}
       {/* Görsel - Mobilde her zaman render et, desktop'ta lazy loading */}
       {(isInView || loading === 'eager') && (
